@@ -1,0 +1,1239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rwanda Driving Permit — Practice Exam</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap');
+
+  :root {
+    --green: #006C35;
+    --green-light: #E8F5EC;
+    --gold: #FAD02C;
+    --dark: #1A1A1A;
+    --light: #F7F5F0;
+    --white: #FFFFFF;
+    --red: #C0392B;
+    --red-light: #FDECEA;
+    --muted: #6B6B6B;
+    --border: #E0DDD5;
+    --radius: 10px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--light);
+    color: var(--dark);
+    min-height: 100vh;
+  }
+
+  /* ── SCREENS ── */
+  .screen { display: none; }
+  .screen.active { display: block; }
+
+  /* ── START SCREEN ── */
+  #start-screen {
+    max-width: 580px;
+    margin: 0 auto;
+    padding: 48px 24px;
+    text-align: center;
+  }
+  .logo-badge {
+    display: inline-block;
+    background: var(--green);
+    color: var(--white);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 5px 14px;
+    border-radius: 100px;
+    margin-bottom: 20px;
+  }
+  #start-screen h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 36px;
+    line-height: 1.15;
+    margin-bottom: 12px;
+  }
+  #start-screen p {
+    color: var(--muted);
+    font-size: 14px;
+    margin-bottom: 36px;
+    line-height: 1.7;
+  }
+
+  .mode-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 28px;
+  }
+  .mode-card {
+    background: var(--white);
+    border: 2px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px 16px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: left;
+  }
+  .mode-card:hover { border-color: var(--green); box-shadow: 0 4px 14px rgba(0,108,53,0.1); }
+  .mode-card.selected { border-color: var(--green); background: var(--green-light); }
+  .mode-card .icon { font-size: 26px; margin-bottom: 10px; }
+  .mode-card h3 { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+  .mode-card p { font-size: 12px; color: var(--muted); line-height: 1.5; }
+
+  .btn-primary {
+    display: inline-block;
+    background: var(--green);
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    padding: 14px 36px;
+    border-radius: 100px;
+    border: none;
+    cursor: pointer;
+    transition: opacity 0.2s, transform 0.1s;
+    width: 100%;
+    max-width: 320px;
+  }
+  .btn-primary:hover { opacity: 0.88; transform: translateY(-1px); }
+  .btn-primary:active { transform: translateY(0); }
+
+  .btn-secondary {
+    display: inline-block;
+    background: transparent;
+    color: var(--green);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 10px 24px;
+    border-radius: 100px;
+    border: 2px solid var(--green);
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-top: 12px;
+  }
+  .btn-secondary:hover { background: var(--green-light); }
+
+  /* ── EXAM SCREEN ── */
+  #exam-screen { max-width: 680px; margin: 0 auto; padding: 24px 24px 80px; }
+
+  .exam-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .exam-meta { font-size: 13px; color: var(--muted); }
+  .exam-meta strong { color: var(--dark); }
+
+  .timer-badge {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    padding: 6px 16px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--dark);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.3s;
+  }
+  .timer-badge.urgent { background: #FFF0ED; border-color: var(--red); color: var(--red); }
+
+  .progress-bar-wrap {
+    background: var(--border);
+    border-radius: 100px;
+    height: 5px;
+    margin-bottom: 28px;
+    overflow: hidden;
+  }
+  .progress-bar-fill {
+    height: 100%;
+    background: var(--green);
+    border-radius: 100px;
+    transition: width 0.4s ease;
+  }
+
+  .question-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 28px 28px 24px;
+    margin-bottom: 16px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  }
+  .question-number {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--green);
+    margin-bottom: 10px;
+  }
+  .question-text {
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 1.55;
+    margin-bottom: 22px;
+  }
+
+  .options-list { display: flex; flex-direction: column; gap: 10px; }
+  .option-btn {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 13px 16px;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    background: var(--light);
+    cursor: pointer;
+    text-align: left;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    color: var(--dark);
+    transition: all 0.15s;
+    line-height: 1.45;
+  }
+  .option-btn:hover:not(:disabled) { border-color: var(--green); background: var(--green-light); }
+  .option-btn:disabled { cursor: default; }
+  .option-btn.selected-correct { border-color: var(--green); background: var(--green-light); color: #1E6B3C; }
+  .option-btn.selected-wrong { border-color: var(--red); background: var(--red-light); color: var(--red); }
+  .option-btn.reveal-correct { border-color: var(--green); background: var(--green-light); color: #1E6B3C; }
+
+  .option-label {
+    flex-shrink: 0;
+    width: 24px; height: 24px;
+    border-radius: 6px;
+    background: var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--muted);
+    margin-top: 0px;
+  }
+  .selected-correct .option-label { background: var(--green); color: var(--white); }
+  .selected-wrong .option-label { background: var(--red); color: var(--white); }
+  .reveal-correct .option-label { background: var(--green); color: var(--white); }
+
+  .feedback-box {
+    display: none;
+    margin-top: 14px;
+    padding: 14px 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    line-height: 1.65;
+  }
+  .feedback-box.correct { background: var(--green-light); border: 1px solid #A8D5B5; color: #1A5C30; display: block; }
+  .feedback-box.wrong { background: var(--red-light); border: 1px solid #F1A899; color: #8B1A0F; display: block; }
+
+  .next-btn-wrap { display: flex; justify-content: flex-end; margin-top: 16px; }
+  .btn-next {
+    background: var(--green);
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 11px 28px;
+    border-radius: 100px;
+    border: none;
+    cursor: pointer;
+    display: none;
+    transition: opacity 0.2s;
+  }
+  .btn-next:hover { opacity: 0.85; }
+  .btn-next.visible { display: block; }
+
+  /* ── RESULTS SCREEN ── */
+  #results-screen {
+    max-width: 580px;
+    margin: 0 auto;
+    padding: 48px 24px;
+    text-align: center;
+  }
+  .score-circle {
+    width: 140px; height: 140px;
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 28px;
+    border: 6px solid var(--green);
+    background: var(--green-light);
+  }
+  .score-circle.fail { border-color: var(--red); background: var(--red-light); }
+  .score-circle .score-num {
+    font-family: 'DM Serif Display', serif;
+    font-size: 42px;
+    color: var(--green);
+    line-height: 1;
+  }
+  .score-circle.fail .score-num { color: var(--red); }
+  .score-circle .score-denom { font-size: 13px; color: var(--muted); font-weight: 500; }
+
+  #results-screen h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 28px;
+    margin-bottom: 10px;
+  }
+  #results-screen .result-sub { color: var(--muted); font-size: 14px; margin-bottom: 32px; line-height: 1.7; }
+
+  .stats-row {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    margin-bottom: 28px;
+  }
+  .stat-box {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px 20px;
+    min-width: 110px;
+    flex: 1;
+  }
+  .stat-box .stat-val {
+    font-family: 'DM Serif Display', serif;
+    font-size: 28px;
+    color: var(--dark);
+  }
+  .stat-box .stat-label { font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+  .review-section { text-align: left; margin-top: 36px; }
+  .review-section h3 {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--red);
+    margin-bottom: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+  }
+  .review-item {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 16px;
+    margin-bottom: 10px;
+    font-size: 13px;
+  }
+  .review-item .ri-q { font-weight: 500; margin-bottom: 6px; line-height: 1.5; }
+  .review-item .ri-your { color: var(--red); font-size: 12px; }
+  .review-item .ri-correct { color: var(--green); font-size: 12px; font-weight: 600; }
+
+  .result-actions { display: flex; flex-direction: column; align-items: center; gap: 10px; margin-top: 32px; }
+
+  @media (max-width: 500px) {
+    .mode-grid { grid-template-columns: 1fr; }
+    .stats-row { flex-wrap: wrap; }
+    #start-screen h1 { font-size: 28px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════
+     START SCREEN
+════════════════════════════════════ -->
+<div id="start-screen" class="screen active">
+  <div class="logo-badge">Rwanda Road Code</div>
+  <h1>Driving Permit<br>Practice Exam</h1>
+  <p>Simulate the real permit test. Get instant feedback on every question. Track your weak areas and improve.</p>
+
+  <div class="mode-grid">
+    <div class="mode-card selected" data-mode="full" onclick="selectMode(this)">
+      <div class="icon">📋</div>
+      <h3>Full Exam (20 Q)</h3>
+      <p>Timed. Mirrors the real permit test. Target: 20/20.</p>
+    </div>
+    <div class="mode-card" data-mode="quick" onclick="selectMode(this)">
+      <div class="icon">⚡</div>
+      <h3>Quick Practice (10 Q)</h3>
+      <p>Shorter session. Great for a fast review.</p>
+    </div>
+    <div class="mode-card" data-mode="speed" onclick="selectMode(this)">
+      <div class="icon">🎯</div>
+      <h3>Speed Limits Only</h3>
+      <p>Drill only speed & distance questions.</p>
+    </div>
+    <div class="mode-card" data-mode="lights" onclick="selectMode(this)">
+      <div class="icon">💡</div>
+      <h3>Lights & Signs Only</h3>
+      <p>Drill lights, reflectors, and road sign colors.</p>
+    </div>
+  </div>
+
+  <button class="btn-primary" onclick="startExam()">Start Exam →</button>
+  <br>
+  <small style="color:var(--muted);font-size:12px;display:block;margin-top:16px;">Questions are randomized each session</small>
+</div>
+
+<!-- ══════════════════════════════════
+     EXAM SCREEN
+════════════════════════════════════ -->
+<div id="exam-screen" class="screen">
+  <div class="exam-header">
+    <div class="exam-meta">Question <strong id="q-current">1</strong> of <strong id="q-total">20</strong></div>
+    <div class="timer-badge" id="timer-badge">⏱ <span id="timer-display">20:00</span></div>
+    <div class="exam-meta">Score: <strong id="live-score">0</strong></div>
+  </div>
+
+  <div class="progress-bar-wrap">
+    <div class="progress-bar-fill" id="progress-fill" style="width:0%"></div>
+  </div>
+
+  <div class="question-card">
+    <div class="question-number" id="q-label">Question 1</div>
+    <div class="question-text" id="q-text">Loading...</div>
+    <div class="options-list" id="options-list"></div>
+    <div class="feedback-box" id="feedback-box"></div>
+  </div>
+
+  <div class="next-btn-wrap">
+    <button class="btn-next" id="btn-next" onclick="nextQuestion()">Next Question →</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     RESULTS SCREEN
+════════════════════════════════════ -->
+<div id="results-screen" class="screen">
+  <div class="score-circle" id="score-circle">
+    <div class="score-num" id="final-score">0</div>
+    <div class="score-denom" id="final-denom">out of 20</div>
+  </div>
+  <h2 id="result-title">Well done!</h2>
+  <p class="result-sub" id="result-sub">Keep it up.</p>
+
+  <div class="stats-row">
+    <div class="stat-box">
+      <div class="stat-val" id="stat-correct">0</div>
+      <div class="stat-label">✅ Correct</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-val" id="stat-wrong">0</div>
+      <div class="stat-label">❌ Wrong</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-val" id="stat-pct">0%</div>
+      <div class="stat-label">📊 Score</div>
+    </div>
+  </div>
+
+  <div class="review-section" id="review-section"></div>
+
+  <div class="result-actions">
+    <button class="btn-primary" onclick="restartSame()">Try Again (Same Mode)</button>
+    <button class="btn-secondary" onclick="goHome()">← Change Mode</button>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════════════
+//  QUESTION BANK
+// ══════════════════════════════════════════════
+const ALL_QUESTIONS = [
+  {
+    id:1, category:'general',
+    q:"Every vehicle or set of vehicles in motion must have:",
+    opts:["A driver only","A conveyor only","Both a driver and a conveyor","No correct answer"],
+    correct:2,
+    explain:"Every vehicle in motion requires both a driver AND a conveyor (escort/attendant)."
+  },
+  {
+    id:2, category:'general',
+    q:"The term 'Foot path' designates a narrow public way accessible only to traffic of:",
+    opts:["Pedestrians","Two-wheel vehicles","Pedestrians and two-wheel vehicles","All vehicles"],
+    correct:0,
+    explain:"A footpath is exclusively for pedestrians."
+  },
+  {
+    id:3, category:'speed',
+    q:"Out of agglomeration, the maximum speed of a moped (cyclomoteur) is:",
+    opts:["30 km/h","40 km/h","50 km/h","60 km/h"],
+    correct:2,
+    explain:"Outside built-up areas, mopeds are limited to 50 km/h."
+  },
+  {
+    id:4, category:'speed',
+    q:"Without specific restrictive regulations, the maximum speed of motorcycles is:",
+    opts:["25 km/h","70 km/h","40 km/h","60 km/h"],
+    correct:2,
+    explain:"In the absence of more restrictive rules, the default motorcycle speed limit is 40 km/h."
+  },
+  {
+    id:5, category:'speed',
+    q:"Without specific regulations, the maximum speed for passenger service vehicles is:",
+    opts:["40 km/h","60 km/h","75 km/h","20 km/h"],
+    correct:1,
+    explain:"Default maximum for public transport (passenger service) vehicles is 60 km/h."
+  },
+  {
+    id:6, category:'speed',
+    q:"Without specific regulations, the maximum speed for taxis/hackney carriages (authorized weight ≤3,500 kg) is:",
+    opts:["60 km/h","40 km/h","75 km/h","20 km/h"],
+    correct:2,
+    explain:"Taxis and hackney carriages weighing up to 3,500 kg have a default maximum of 75 km/h."
+  },
+  {
+    id:7, category:'speed',
+    q:"When passing a pedestrian near an obstacle, if a 1m free space cannot be left, the maximum speed allowed is:",
+    opts:["10 km/h","20 km/h","30 km/h","No speed limit"],
+    correct:1,
+    explain:"If a 1m free space cannot be left beside an obstacle, you must pass the pedestrian at no more than 20 km/h."
+  },
+  {
+    id:8, category:'speed',
+    q:"Vehicles must be fitted with a speedometer if likely to exceed on flat surface:",
+    opts:["60 km/h","40 km/h","30 km/h","25 km/h"],
+    correct:1,
+    explain:"Any vehicle capable of exceeding 40 km/h on flat must have a speed indicator visible to the driver."
+  },
+  {
+    id:9, category:'speed',
+    q:"Motor vehicles (except mopeds) must have a sound alarm audible at least:",
+    opts:["200m","150m","100m","50m"],
+    correct:2,
+    explain:"Standard motor vehicles: alarm audible at 100m. Mopeds: 20m. Slow vehicles (≤50km/h flat): 50m."
+  },
+  {
+    id:10, category:'speed',
+    q:"When unloaded vehicle speed on flat cannot exceed 50 km/h, the horn must be audible at:",
+    opts:["100m","200m","50m","150m"],
+    correct:2,
+    explain:"Slow vehicles limited to 50 km/h on flat: horn must be audible at 50m."
+  },
+  {
+    id:11, category:'speed',
+    q:"Mopeds must have a horn audible at a distance of:",
+    opts:["100m","50m","20m","200m"],
+    correct:2,
+    explain:"Mopeds (cyclomoteurs) require a horn audible at a minimum of 20m."
+  },
+  {
+    id:12, category:'speed',
+    q:"Emergency chain/cable towing fastening must be used at a maximum speed of:",
+    opts:["50 km/h","30 km/h","20 km/h","10 km/h"],
+    correct:2,
+    explain:"Chain/cable fastening (force majeure towing) may only be used at max 20 km/h to reach the repair place."
+  },
+  {
+    id:13, category:'vehicle',
+    q:"Which vehicles must be inspected for roadworthiness every 6 months?",
+    opts:["Only driving school vehicles","Only goods vehicles >3.5t","Public transport, goods >3.5t, and driving school vehicles","All private vehicles"],
+    correct:2,
+    explain:"All three: public transport, goods vehicles >3.5t, and driving school vehicles require 6-monthly inspections."
+  },
+  {
+    id:14, category:'vehicle',
+    q:"The device used for slowing down a vehicle in case of brake failure is called:",
+    opts:["Service brake","Parking brake","Emergency brake","Drum brake"],
+    correct:2,
+    explain:"Service brake = normal driving | Parking brake = holds on slopes | Emergency brake = backup when service brake fails."
+  },
+  {
+    id:15, category:'vehicle',
+    q:"Which brake allows slowing and stopping quickly in any condition of loading, on any gradient?",
+    opts:["Service brake","Emergency brake","Parking brake","Hydraulic brake"],
+    correct:0,
+    explain:"The service brake is the primary working brake — efficient stop regardless of load or road gradient."
+  },
+  {
+    id:16, category:'vehicle',
+    q:"Which brake maintains the vehicle immobile on a 16% slope using purely mechanical action, even without a driver?",
+    opts:["Service brake","Emergency brake","Parking brake","All brakes"],
+    correct:2,
+    explain:"The parking brake uses purely mechanical action to hold the vehicle on a 16% slope without the driver present."
+  },
+  {
+    id:17, category:'vehicle',
+    q:"What is the minimum number of windscreen wipers required for every vehicle?",
+    opts:["2","3","1","4"],
+    correct:2,
+    explain:"The legal minimum is 1 windscreen wiper. Most vehicles have 2, but 1 is the required minimum."
+  },
+  {
+    id:18, category:'vehicle',
+    q:"Children under what age are forbidden from the front seat when no other seats are available?",
+    opts:["10 years","12 years","7 years","8 years"],
+    correct:1,
+    explain:"Children under 12 are forbidden from the front seat even when no other seats are available."
+  },
+  {
+    id:19, category:'vehicle',
+    q:"A speed limit plate is placed only on vehicles whose authorized weight exceeds:",
+    opts:["1 tonne","2 tonnes","10 tonnes","24 tonnes"],
+    correct:3,
+    explain:"Speed limit marking plates are only required on very heavy vehicles exceeding 24 tonnes authorized weight."
+  },
+  {
+    id:20, category:'vehicle',
+    q:"Every fact requiring change to vehicle registration/owner details must be notified to the tax department within:",
+    opts:["2 months","1 month","15 days","30 days"],
+    correct:2,
+    explain:"Changes must be reported within 15 days, either verbally or by registered letter."
+  },
+  {
+    id:21, category:'vehicle',
+    q:"Vehicles with width exceeding what measurement must be provided with loading/gauge lights?",
+    opts:["3m","2.50m","2.10m","2m"],
+    correct:2,
+    explain:"Gauge/loading lights are required when vehicle width exceeds 2.10m."
+  },
+  {
+    id:22, category:'vehicle',
+    q:"The maximum rear overhang (loading) for bicycles, mopeds, and motorcycles is:",
+    opts:["20cm","30cm","50cm","60cm"],
+    correct:2,
+    explain:"Loading on bicycles/mopeds/motorcycles cannot project more than 50cm beyond the rear edge."
+  },
+  {
+    id:23, category:'vehicle',
+    q:"Maximum length for vehicles with one axle is:",
+    opts:["7m","9m","11m","14m"],
+    correct:2,
+    explain:"Single-axle vehicles are limited to 11m in length."
+  },
+  {
+    id:24, category:'vehicle',
+    q:"Maximum length for vehicles with two oscillating (side-by-side) axles is:",
+    opts:["11m","10m","7m","9m"],
+    correct:2,
+    explain:"Vehicles with two oscillating axles are limited to 7m."
+  },
+  {
+    id:25, category:'lights',
+    q:"The red brake light must be visible in clear weather at a minimum distance of:",
+    opts:["100m day / 20m night","150m day / 50m night","200m day / 100m night","50m day / 20m night"],
+    correct:2,
+    explain:"The brake light must be visible at 200m by day and 100m at night in clear weather."
+  },
+  {
+    id:26, category:'lights',
+    q:"Headlights (road lights) must be switched off when:",
+    opts:["Only in agglomeration","Only when crossing another vehicle","When road lighting allows 20m visibility, when crossing, or in agglomeration (all three)","Only at night"],
+    correct:2,
+    explain:"All three: (1) continuous road lighting allows 20m visibility, (2) when crossing another vehicle, (3) in agglomeration."
+  },
+  {
+    id:27, category:'lights',
+    q:"Headlights must also be switched off when following another vehicle closer than:",
+    opts:["50m","100m","150m","200m"],
+    correct:1,
+    explain:"When following within 100m, switch off bright headlights — unless signaling intent to overtake by flashing."
+  },
+  {
+    id:28, category:'lights',
+    q:"Reflectors placed on the SIDES of a vehicle are what color?",
+    opts:["White","Yellow","Red","Orange"],
+    correct:1,
+    explain:"Side reflectors on vehicles must be yellow."
+  },
+  {
+    id:29, category:'lights',
+    q:"Road border reflectors: what color do road users see on their RIGHT side?",
+    opts:["White","Yellow","Red or orange","Green"],
+    correct:2,
+    explain:"Right side = red or orange reflectors. Left side = white reflectors."
+  },
+  {
+    id:30, category:'lights',
+    q:"Road border reflectors: what color do road users see on their LEFT side?",
+    opts:["White","Yellow","Red","Orange"],
+    correct:0,
+    explain:"Left side = white reflectors. Right side = red or orange reflectors."
+  },
+  {
+    id:31, category:'lights',
+    q:"The light allowing a driver to signal they noticed someone preparing to overtake them is what color?",
+    opts:["Yellow","Red","Green","White"],
+    correct:2,
+    explain:"A GREEN light at the rear-left of a vehicle signals: 'I have noticed your intention to pass me.'"
+  },
+  {
+    id:32, category:'lights',
+    q:"Which vehicles must have a flashing BLUE light visible in all directions?",
+    opts:["Vehicles wider than 2.10m","National police vehicles","Priority vehicles (ambulances, fire trucks, etc.)","All three"],
+    correct:2,
+    explain:"The flashing blue light is reserved for PRIORITY vehicles — not merely police or wide vehicles."
+  },
+  {
+    id:33, category:'lights',
+    q:"A free taxi's luminous indicator should be:",
+    opts:["Green at front only","Yellow at back only","Green at front AND yellow at back","Orange at front"],
+    correct:2,
+    explain:"A taxi 'free' indicator = green light at front AND yellow light at the rear."
+  },
+  {
+    id:34, category:'lights',
+    q:"Flashing orange lights on school buses are placed:",
+    opts:["Both at the back","Both at the front","One at front, one at back","On the roof"],
+    correct:2,
+    explain:"School bus flashing orange warning lights: one at the front and one at the back of the vehicle."
+  },
+  {
+    id:35, category:'lights',
+    q:"Direction indicator lights — which colors are correct?",
+    opts:["Front: orange | Rear: red","Front: white or yellow | Rear: red or orange","Front: red | Rear: white","Front: yellow | Rear: orange only"],
+    correct:1,
+    explain:"Direction indicators: front = white or yellow | rear = red or orange."
+  },
+  {
+    id:36, category:'lights',
+    q:"Road lights must illuminate at least 100m ahead. For vehicles with engine ≤125cc, this is reduced to:",
+    opts:["200m","100m","85m","50m"],
+    correct:2,
+    explain:"Standard road lights: 100m. For motorcycles/mopeds with engine capacity ≤125cc: reduced to 85m."
+  },
+  {
+    id:37, category:'lights',
+    q:"Loading/gauge lights must be visible at night from at least:",
+    opts:["50m","100m","150m","200m"],
+    correct:3,
+    explain:"Loading (gauge) lights must be visible at night in clear weather from at least 200m."
+  },
+  {
+    id:38, category:'lights',
+    q:"When illuminated by another vehicle's road lights, reflectors must be visible from:",
+    opts:["100m","150m","200m","50m"],
+    correct:1,
+    explain:"Reflectors must be visible to approaching drivers from at least 150m when illuminated by road lights."
+  },
+  {
+    id:39, category:'lights',
+    q:"The minimum height of any light or reflector from the ground (vehicle empty) is:",
+    opts:["30cm","40cm","50cm","1.55m"],
+    correct:1,
+    explain:"No light or reflector may be placed with its lowest point below 40cm from ground level (vehicle empty). Exception: fog lights and reversing lights."
+  },
+  {
+    id:40, category:'lights',
+    q:"The maximum height of position lights (front/rear) from the ground is:",
+    opts:["1.50m","1.75m","1.90m","2.10m"],
+    correct:2,
+    explain:"The highest point of position lights cannot exceed 1.90m above ground (vehicle unloaded)."
+  },
+  {
+    id:41, category:'lights',
+    q:"The license plate light must allow the plate to be readable in clear weather at:",
+    opts:["150m","50m","20m","10m"],
+    correct:2,
+    explain:"The illuminating light of the registration plate must make it readable at 20m in clear weather."
+  },
+  {
+    id:42, category:'signs',
+    q:"When traffic is diverted, the diversion signal has what color surface?",
+    opts:["White","Red","Blue","Yellow"],
+    correct:2,
+    explain:"Traffic deviation/diversion signals are characterized by a BLUE surface."
+  },
+  {
+    id:43, category:'signs',
+    q:"Which road signs have similar shapes (both are circular)?",
+    opts:["Indication and obligation","Danger and obligation","Prohibition and obligation","Warning and information"],
+    correct:2,
+    explain:"Both PROHIBITION signs (red-bordered circle) and OBLIGATION signs (blue circle) are circular in shape."
+  },
+  {
+    id:44, category:'signs',
+    q:"The 'no overtaking' sign has symbols of what colors?",
+    opts:["White and black","Red and black","Blue","Green and white"],
+    correct:1,
+    explain:"The no overtaking sign uses RED and BLACK symbols."
+  },
+  {
+    id:45, category:'signs',
+    q:"The dead-end road sign has symbols of what colors?",
+    opts:["Black and red","Black and white","White and blue","Red and white"],
+    correct:2,
+    explain:"The dead-end (no through road) sign is characterized by WHITE and BLUE symbols."
+  },
+  {
+    id:46, category:'signs',
+    q:"The sign showing a reserved public transport stop has what surface color?",
+    opts:["Blue","White","Red","Yellow"],
+    correct:0,
+    explain:"The public transport stop reservation sign has a BLUE surface."
+  },
+  {
+    id:47, category:'signs',
+    q:"The highway (autoroute) start sign has symbols of what colors?",
+    opts:["White and black","White and red","White and yellow","Blue and white"],
+    correct:0,
+    explain:"The sign showing the start of a highway uses WHITE and BLACK symbols."
+  },
+  {
+    id:48, category:'signs',
+    q:"Temporary danger/diversion signs (for accidents or roadworks) are characterized by:",
+    opts:["White and black","White and yellow","White surface only","Red and white"],
+    correct:1,
+    explain:"Temporary danger/diversion signs (accidents, roadworks) use WHITE and YELLOW colors."
+  },
+  {
+    id:49, category:'signs',
+    q:"The compulsory direction sign during roadworks has what colors?",
+    opts:["Blue surface, white symbol","Red perimeter, white surface, black symbol","White surface, red symbol","Green surface, white symbol"],
+    correct:0,
+    explain:"The mandatory direction sign during roadworks = BLUE surface + WHITE symbol."
+  },
+  {
+    id:50, category:'signs',
+    q:"Outside agglomeration, danger and priority signs must be placed at what distance from the hazard?",
+    opts:["150 to 200m","100 to 150m","50 to 100m","200 to 250m"],
+    correct:0,
+    explain:"Outside built-up areas, danger and priority signs are placed 150–200m from the dangerous area."
+  },
+  {
+    id:51, category:'signs',
+    q:"A solid continuous white line on the road means:",
+    opts:["You may overtake","You must not cross the line","You are approaching a stop sign","Road narrows ahead"],
+    correct:1,
+    explain:"A continuous (unbroken) white line is a barrier line — you must NOT cross it under any circumstances."
+  },
+  {
+    id:52, category:'signs',
+    q:"A broken (dashed) white line on the road means:",
+    opts:["You may not overtake at all","You may cross it if it is safe to do so","You must stay in your lane","Road is slippery"],
+    correct:1,
+    explain:"A broken white line can be crossed when it is safe to do so — unlike a solid line which cannot be crossed."
+  },
+  {
+    id:53, category:'signs',
+    q:"The roadway section beyond a wide continuous white line (fictitious border) is reserved for:",
+    opts:["Stopping only","Parking only","Stopping and parking","Cyclists only"],
+    correct:2,
+    explain:"The area beyond the fictitious border white line is for stopping AND parking. Exception: does not apply on highways."
+  },
+  {
+    id:54, category:'signs',
+    q:"Provisional orange-colored studs may replace:",
+    opts:["Continuous white lines only","Continuous AND broken longitudinal white lines","All road markings","Yellow lines only"],
+    correct:1,
+    explain:"Orange studs can replace both continuous AND broken longitudinal white lines."
+  },
+  {
+    id:55, category:'signs',
+    q:"Signals at a road/railway crossing must be visible in clear weather at:",
+    opts:["200m","250m","300m","150m"],
+    correct:2,
+    explain:"Railway crossing signals must be lit or reflective, visible at 300m in clear weather."
+  },
+  {
+    id:56, category:'signs',
+    q:"Posts at traffic islands and channeling devices are painted in:",
+    opts:["Reflective yellow","Reflective white","Reflective orange","Reflective red"],
+    correct:0,
+    explain:"Traffic island posts and channeling devices are painted in REFLECTIVE YELLOW."
+  },
+  {
+    id:57, category:'rules',
+    q:"Overtaking is performed on:",
+    opts:["The right side only","The left side (every time)","The right side to overtake animals","Either side depending on traffic"],
+    correct:1,
+    explain:"In Rwanda (right-hand traffic), overtaking is ALWAYS done on the LEFT side — moving into the oncoming lane."
+  },
+  {
+    id:58, category:'rules',
+    q:"Overtaking any vehicle (other than a two-wheeler) is forbidden near:",
+    opts:["Bridges with narrow roadway only","Pedestrian crossings only","Dangerous road sections only","All of the above"],
+    correct:3,
+    explain:"Overtaking is forbidden near bridges with narrow roads, pedestrian crossings, AND dangerous road sections — all three."
+  },
+  {
+    id:59, category:'rules',
+    q:"Parking is forbidden less than 1 meter before or behind another stopped vehicle. What else makes parking forbidden?",
+    opts:["Where prohibition signs are placed only","Where pedestrians must use roadway to pass an obstacle only","Both of the above, plus where prohibition signs are placed","Only in urban areas"],
+    correct:2,
+    explain:"Parking is forbidden: within 1m of stopped vehicles, where prohibition signs are placed, AND where pedestrians must use the roadway to pass obstacles."
+  },
+  {
+    id:60, category:'rules',
+    q:"Stopping and parking are forbidden on all one-way roads. Also forbidden when:",
+    opts:["On two-way roads where remaining passage would be under 12m","Only during peak hours","Only if no parking sign is present","None of the above"],
+    correct:0,
+    explain:"On two-way roads, stopping/parking is forbidden if the remaining passable width would be reduced to less than 12m."
+  },
+  {
+    id:61, category:'rules',
+    q:"When stopped/parked on a pavement used by pedestrians, the driver must leave at least:",
+    opts:["0.50m free","1 meter free","2 meters free","No specific requirement"],
+    correct:1,
+    explain:"A minimum 1-meter free band must be left for pedestrians when stopped/parked on a pavement."
+  },
+  {
+    id:62, category:'rules',
+    q:"The right-hand priority rule at junctions applies when:",
+    opts:["There is no priority road signal only","Traffic lights are not working only","Either no signal is present OR traffic lights are malfunctioning","Only on rural roads"],
+    correct:2,
+    explain:"Right-hand priority applies: (1) no priority signals present, OR (2) traffic lights not working."
+  },
+  {
+    id:63, category:'rules',
+    q:"A yellow flashing light at a dangerous spot — what does it change about priority rules?",
+    opts:["Gives priority to facing drivers","Gives priority to long vehicles","Does not modify priority rules at all","Requires all vehicles to stop"],
+    correct:2,
+    explain:"A yellow flashing light means 'proceed with extreme caution' — it does NOT change right-of-way rules."
+  },
+  {
+    id:64, category:'rules',
+    q:"It is forbidden to hold up normal traffic flow by:",
+    opts:["Moving at an abnormally reduced speed only","Causing abrupt braking not required for safety only","Both of the above","Driving during rush hour"],
+    correct:2,
+    explain:"Both: abnormally reduced speed AND unnecessary abrupt braking are forbidden as they obstruct normal traffic flow."
+  },
+  {
+    id:65, category:'special',
+    q:"When visibility is less than 200m, general groups of pedestrians on the roadway must signal: Front = ? / Rear = ?",
+    opts:["Front: white light | Rear: red light","Front: yellow light (left) | Rear: white light (left)","Front: red light | Rear: yellow light","Front: orange | Rear: green"],
+    correct:1,
+    explain:"General pedestrian groups: Front = YELLOW light held on LEFT | Rear = WHITE light held on LEFT."
+  },
+  {
+    id:66, category:'special',
+    q:"Armed forces formations on march when visibility <200m must signal: Front = ? / Rear = ?",
+    opts:["Front: yellow light | Rear: white light","Front: white light (left) | Rear: yellow light (left)","Front: red light | Rear: white light","Front: orange | Rear: red"],
+    correct:1,
+    explain:"Armed forces: Front = WHITE light on left | Rear = YELLOW light on left. Opposite to general pedestrian groups."
+  },
+  {
+    id:67, category:'special',
+    q:"Animal-drawn vehicles, handcarts, and cattle when visibility <200m must be signaled by:",
+    opts:["Front white only","Rear red only","Front white OR yellow/orange AND rear red","No signaling required"],
+    correct:2,
+    explain:"Animal-drawn vehicles/cattle: front = white OR yellow/orange light; rear = red light. All answers are correct."
+  },
+  {
+    id:68, category:'special',
+    q:"A herd of more than 4 large or 6 small animals must be signaled at night by:",
+    opts:["Red lamp at front only","White lamp at front AND red or yellow lamp at rear","Orange lamp only","No lamp required"],
+    correct:1,
+    explain:"Herds: white or orange lamp at FRONT + red or yellow lamp at REAR."
+  },
+  {
+    id:69, category:'special',
+    q:"Motor vehicle alarms must be uniform and non-shrilling. Which vehicles may have a special alarm?",
+    opts:["Priority vehicles only","Road maintenance vehicles only","Both priority vehicles and road maintenance vehicles","All vehicles over 2.10m wide"],
+    correct:2,
+    explain:"Special alarms permitted for: priority vehicles AND vehicles assigned to road maintenance — both (A and B)."
+  },
+  {
+    id:70, category:'special',
+    q:"A convoy cannot exceed 500m. It must be divided into groups of maximum:",
+    opts:["50m each","100m each","150m each","200m each"],
+    correct:0,
+    explain:"Convoy sub-groups must be 50m maximum each, separated by at least 50m. Police/military convoys in built-up areas are exempt."
+  },
+  {
+    id:71, category:'special',
+    q:"When a second vehicle is trailed and total length exceeds 18m (excluding leading shaft), what is required?",
+    opts:["One conveyor for the second vehicle","Two conveyors","A special permit","No requirement"],
+    correct:0,
+    explain:"When the train exceeds 18m, the second vehicle must be accompanied by ONE conveyor."
+  },
+  {
+    id:72, category:'special',
+    q:"Any immobilized vehicle on the roadway must be signaled at distance. This does NOT apply to:",
+    opts:["Trucks","Bicycles and motorbikes without sidecar","Cars","Buses"],
+    correct:1,
+    explain:"Bicycles and motorbikes without sidecar are exempt from the requirement to signal a breakdown at distance."
+  },
+  {
+    id:73, category:'vehicle',
+    q:"Maximum weight for vehicles with 3+ axles outside urban areas (except semi-trailers):",
+    opts:["10 tonnes","12 tonnes","16 tonnes","24 tonnes"],
+    correct:2,
+    explain:"3+ axle vehicles (not semi-trailers) outside urban areas: maximum 16 tonnes."
+  },
+  {
+    id:74, category:'vehicle',
+    q:"Maximum weight for articulated vehicles with 3 axles outside urban areas:",
+    opts:["20 tonnes","16 tonnes","12 tonnes","10 tonnes"],
+    correct:2,
+    explain:"Articulated vehicles with 3 axles outside urban areas: maximum 12 tonnes."
+  },
+  {
+    id:75, category:'vehicle',
+    q:"Maximum load for any lorry in urban areas / national roads:",
+    opts:["10 tonnes","16 tonnes","24 tonnes","No limit"],
+    correct:1,
+    explain:"Maximum lorry load in urban areas and national roads: 16 tonnes."
+  },
+  {
+    id:76, category:'signs',
+    q:"When the distance from a danger sign to the hazard is less than 150m, the distance is shown by an additional signal that is a:",
+    opts:["Square with white surface","Rectangle with white surface","Triangle with red perimeter","Blue circle"],
+    correct:1,
+    explain:"Additional distance indicator signal = RECTANGLE with white surface."
+  },
+  {
+    id:77, category:'rules',
+    q:"A vehicle may move on a slope with engine off or gears at neutral ONLY when:",
+    opts:["Going downhill","Being towed by another vehicle","It has a service brake","All of the above"],
+    correct:1,
+    explain:"A vehicle may coast on a slope ONLY when being trailed/towed by another vehicle."
+  },
+  {
+    id:78, category:'general',
+    q:"The section of highway delineated by two broken parallel white lines, too narrow for automobiles, is a passage for:",
+    opts:["Wheelbarrows","Bicycles and mopeds","Cyclists only","Pedestrians"],
+    correct:1,
+    explain:"The lane marked by two broken parallel white lines is a cycle path for bicycles and mopeds."
+  },
+  {
+    id:79, category:'vehicle',
+    q:"The obligation to have signaling devices does NOT apply to:",
+    opts:["Motorcycles","Baby/children's cars and wheelchairs","Mopeds","Agricultural vehicles"],
+    correct:1,
+    explain:"Baby cars (strollers) and wheelchairs (invalid carriages) are exempt from the signaling device obligation."
+  },
+  {
+    id:80, category:'lights',
+    q:"Which lighting may be used to replace position lights when a small vehicle (≤6m length, ≤2m width) is parked in a suburb parallel to the road?",
+    opts:["Headlights","Gauge lights","Parking lights","Fog lights"],
+    correct:2,
+    explain:"For small vehicles (≤6m × ≤2m), position lights can be replaced by PARKING lights when parked in suburbs, parallel to road border."
+  }
+];
+
+// Category sets
+const SPEED_CATS = ['speed'];
+const LIGHT_CATS = ['lights','signs'];
+
+// ══════════════════════════════════════════════
+//  STATE
+// ══════════════════════════════════════════════
+let selectedMode = 'full';
+let examQuestions = [];
+let currentIndex = 0;
+let score = 0;
+let wrongAnswers = [];
+let timerInterval = null;
+let timeLeft = 0;
+let answered = false;
+
+// ══════════════════════════════════════════════
+//  MODE SELECTION
+// ══════════════════════════════════════════════
+function selectMode(el) {
+  document.querySelectorAll('.mode-card').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedMode = el.dataset.mode;
+}
+
+// ══════════════════════════════════════════════
+//  START EXAM
+// ══════════════════════════════════════════════
+function startExam() {
+  score = 0;
+  currentIndex = 0;
+  wrongAnswers = [];
+  answered = false;
+
+  let pool = [...ALL_QUESTIONS];
+
+  if (selectedMode === 'speed') {
+    pool = pool.filter(q => SPEED_CATS.includes(q.category));
+  } else if (selectedMode === 'lights') {
+    pool = pool.filter(q => LIGHT_CATS.includes(q.category));
+  }
+
+  // Shuffle
+  pool = pool.sort(() => Math.random() - 0.5);
+
+  const count = (selectedMode === 'quick') ? 10 : (selectedMode === 'full') ? 20 : Math.min(pool.length, 15);
+  examQuestions = pool.slice(0, Math.min(count, pool.length));
+
+  // Timer
+  timeLeft = (selectedMode === 'quick') ? 10 * 60 : 20 * 60;
+
+  showScreen('exam-screen');
+  document.getElementById('q-total').textContent = examQuestions.length;
+  document.getElementById('final-denom').textContent = `out of ${examQuestions.length}`;
+  startTimer();
+  renderQuestion();
+}
+
+// ══════════════════════════════════════════════
+//  TIMER
+// ══════════════════════════════════════════════
+function startTimer() {
+  clearInterval(timerInterval);
+  updateTimerDisplay();
+  timerInterval = setInterval(() => {
+    timeLeft--;
+    updateTimerDisplay();
+    if (timeLeft <= 0) {
+      clearInterval(timerInterval);
+      showResults();
+    }
+  }, 1000);
+}
+
+function updateTimerDisplay() {
+  const m = Math.floor(timeLeft / 60).toString().padStart(2,'0');
+  const s = (timeLeft % 60).toString().padStart(2,'0');
+  document.getElementById('timer-display').textContent = `${m}:${s}`;
+  const badge = document.getElementById('timer-badge');
+  badge.classList.toggle('urgent', timeLeft < 120);
+}
+
+// ══════════════════════════════════════════════
+//  RENDER QUESTION
+// ══════════════════════════════════════════════
+function renderQuestion() {
+  answered = false;
+  const q = examQuestions[currentIndex];
+  const total = examQuestions.length;
+
+  document.getElementById('q-current').textContent = currentIndex + 1;
+  document.getElementById('q-label').textContent = `Question ${currentIndex + 1}`;
+  document.getElementById('q-text').textContent = q.q;
+  document.getElementById('live-score').textContent = score;
+  document.getElementById('progress-fill').style.width = `${(currentIndex / total) * 100}%`;
+
+  const feedback = document.getElementById('feedback-box');
+  feedback.className = 'feedback-box';
+  feedback.textContent = '';
+
+  const nextBtn = document.getElementById('btn-next');
+  nextBtn.classList.remove('visible');
+  nextBtn.textContent = currentIndex === total - 1 ? 'See Results →' : 'Next Question →';
+
+  // Shuffle options with index tracking
+  const labels = ['A','B','C','D'];
+  const indices = [0,1,2,3].slice(0, q.opts.length);
+  const shuffled = indices.sort(() => Math.random() - 0.5);
+
+  const list = document.getElementById('options-list');
+  list.innerHTML = '';
+  shuffled.forEach((origIdx, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'option-btn';
+    btn.dataset.orig = origIdx;
+    btn.innerHTML = `<span class="option-label">${labels[i]}</span><span>${q.opts[origIdx]}</span>`;
+    btn.onclick = () => selectAnswer(btn, origIdx, q);
+    list.appendChild(btn);
+  });
+}
+
+// ══════════════════════════════════════════════
+//  ANSWER SELECTION
+// ══════════════════════════════════════════════
+function selectAnswer(btn, origIdx, q) {
+  if (answered) return;
+  answered = true;
+
+  const isCorrect = origIdx === q.correct;
+  const feedback = document.getElementById('feedback-box');
+  const allBtns = document.querySelectorAll('.option-btn');
+
+  allBtns.forEach(b => {
+    b.disabled = true;
+    if (parseInt(b.dataset.orig) === q.correct) {
+      b.classList.add('reveal-correct');
+    }
+  });
+
+  if (isCorrect) {
+    btn.classList.add('selected-correct');
+    score++;
+    document.getElementById('live-score').textContent = score;
+    feedback.className = 'feedback-box correct';
+    feedback.innerHTML = `<strong>✓ Correct!</strong> ${q.explain}`;
+  } else {
+    btn.classList.add('selected-wrong');
+    feedback.className = 'feedback-box wrong';
+    feedback.innerHTML = `<strong>✗ Incorrect.</strong> The correct answer was: <strong>${q.opts[q.correct]}</strong>. ${q.explain}`;
+    wrongAnswers.push({ q: q.q, your: q.opts[origIdx], correct: q.opts[q.correct] });
+  }
+
+  document.getElementById('btn-next').classList.add('visible');
+}
+
+// ══════════════════════════════════════════════
+//  NEXT QUESTION
+// ══════════════════════════════════════════════
+function nextQuestion() {
+  currentIndex++;
+  if (currentIndex >= examQuestions.length) {
+    showResults();
+  } else {
+    renderQuestion();
+  }
+}
+
+// ══════════════════════════════════════════════
+//  RESULTS
+// ══════════════════════════════════════════════
+function showResults() {
+  clearInterval(timerInterval);
+  const total = examQuestions.length;
+  const pct = Math.round((score / total) * 100);
+  const passed = pct >= 80;
+
+  document.getElementById('final-score').textContent = score;
+  document.getElementById('final-denom').textContent = `out of ${total}`;
+
+  const circle = document.getElementById('score-circle');
+  circle.className = passed ? 'score-circle' : 'score-circle fail';
+
+  document.getElementById('result-title').textContent =
+    score === total ? '🏆 Perfect Score!' :
+    pct >= 90 ? '🎯 Excellent!' :
+    pct >= 80 ? '✅ Passed!' :
+    '📚 Keep Studying';
+
+  document.getElementById('result-sub').textContent =
+    score === total ? 'Flawless. You are absolutely ready for the real exam.' :
+    pct >= 90 ? `You got ${score}/${total}. You\'re well prepared — review your ${total-score} miss${total-score===1?'':'es'} and you\'re ready.` :
+    pct >= 80 ? `You passed with ${pct}%. Review the questions you missed before the real exam.` :
+    `You got ${score}/${total} (${pct}%). Focus on the topics you missed and try again.`;
+
+  document.getElementById('stat-correct').textContent = score;
+  document.getElementById('stat-wrong').textContent = total - score;
+  document.getElementById('stat-pct').textContent = pct + '%';
+
+  const reviewSection = document.getElementById('review-section');
+  if (wrongAnswers.length > 0) {
+    let html = `<h3>❌ Questions You Missed (${wrongAnswers.length})</h3>`;
+    wrongAnswers.forEach(w => {
+      html += `<div class="review-item">
+        <div class="ri-q">${w.q}</div>
+        <div class="ri-your">Your answer: ${w.your}</div>
+        <div class="ri-correct">✓ Correct answer: ${w.correct}</div>
+      </div>`;
+    });
+    reviewSection.innerHTML = html;
+  } else {
+    reviewSection.innerHTML = '<div style="text-align:center;color:var(--green);font-weight:600;font-size:15px;padding:20px">🎉 No mistakes — perfect round!</div>';
+  }
+
+  showScreen('results-screen');
+}
+
+// ══════════════════════════════════════════════
+//  NAVIGATION
+// ══════════════════════════════════════════════
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+function restartSame() { startExam(); }
+function goHome() {
+  clearInterval(timerInterval);
+  showScreen('start-screen');
+}
+</script>
+</body>
+</html>
