@@ -1,15 +1,15 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Rwanda Driving Permit Study Guide</title>
+<title>Rwanda Driving Permit — Study Guide & Practice Exams</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500;600&display=swap');
 
   :root {
     --green: #006C35;
+    --green-dark: #004D25;
     --gold: #FAD02C;
     --dark: #1A1A1A;
     --light: #F7F5F0;
@@ -22,6 +22,8 @@
     --correct-border: #27AE60;
     --warning: #FFF8E1;
     --warning-border: #F39C12;
+    --info: #EBF4FF;
+    --info-border: #93C5FD;
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -34,7 +36,7 @@
     line-height: 1.7;
   }
 
-  /* HEADER */
+  /* ─── HERO ─── */
   .hero {
     background: var(--green);
     color: var(--white);
@@ -58,18 +60,6 @@
     background: rgba(250,208,44,0.07);
     border-radius: 50%;
   }
-  .hero-tag {
-    display: inline-block;
-    background: var(--gold);
-    color: var(--dark);
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    padding: 4px 12px;
-    border-radius: 2px;
-    margin-bottom: 16px;
-  }
   .hero h1 {
     font-family: 'DM Serif Display', serif;
     font-size: 38px;
@@ -85,36 +75,44 @@
     position: relative;
     z-index: 1;
   }
-  .hero .score-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background: var(--gold);
-    color: var(--dark);
-    font-weight: 600;
-    font-size: 13px;
-    padding: 8px 18px;
-    border-radius: 100px;
+  .hero-badges {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
     margin-top: 20px;
     position: relative;
     z-index: 1;
   }
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(250,208,44,0.18);
+    border: 1px solid rgba(250,208,44,0.4);
+    color: var(--gold);
+    font-size: 12px;
+    font-weight: 600;
+    padding: 5px 12px;
+    border-radius: 100px;
+  }
 
-  /* NAV */
+  /* ─── NAV ─── */
   .nav-bar {
     background: var(--white);
     border-bottom: 2px solid var(--gold);
     padding: 0 40px;
     display: flex;
-    gap: 4px;
+    gap: 2px;
     overflow-x: auto;
     position: sticky;
     top: 0;
     z-index: 100;
+    scrollbar-width: none;
   }
+  .nav-bar::-webkit-scrollbar { display: none; }
   .nav-bar a {
     display: inline-block;
-    padding: 14px 16px;
+    padding: 14px 15px;
     font-size: 13px;
     font-weight: 500;
     color: var(--muted);
@@ -122,10 +120,19 @@
     white-space: nowrap;
     border-bottom: 3px solid transparent;
     transition: all 0.2s;
+    cursor: pointer;
   }
   .nav-bar a:hover { color: var(--green); border-bottom-color: var(--green); }
+  .nav-bar a.quiz-nav {
+    color: var(--green);
+    font-weight: 600;
+    border-left: 1px solid var(--border);
+    margin-left: 8px;
+    padding-left: 20px;
+  }
+  .nav-bar a.quiz-nav:hover { color: var(--dark); border-bottom-color: var(--gold); }
 
-  /* LAYOUT */
+  /* ─── LAYOUT ─── */
   .container { max-width: 960px; margin: 0 auto; padding: 0 40px; }
 
   section { padding: 48px 0 32px; }
@@ -144,7 +151,7 @@
     margin-bottom: 28px;
   }
 
-  /* QUICK REFERENCE TABLE */
+  /* ─── TABLES ─── */
   .ref-table {
     width: 100%;
     border-collapse: collapse;
@@ -168,9 +175,12 @@
     padding: 11px 16px;
     font-size: 14px;
     border-bottom: 1px solid var(--border);
+    vertical-align: top;
   }
   .ref-table tr:last-child td { border-bottom: none; }
   .ref-table tr:nth-child(even) td { background: #FAFAF8; }
+  .ref-table .highlight td { background: var(--warning) !important; }
+
   .answer-pill {
     display: inline-block;
     background: var(--green);
@@ -180,16 +190,17 @@
     padding: 2px 9px;
     border-radius: 100px;
   }
-  .ref-table .highlight td { background: var(--warning) !important; }
+  .answer-pill.red { background: var(--red); }
+  .answer-pill.gold { background: #B8860B; }
+  .answer-pill.blue { background: var(--blue); }
 
-  /* Q&A CARDS */
+  /* ─── QA CARDS ─── */
   .qa-grid {
     display: flex;
     flex-direction: column;
     gap: 14px;
     margin-bottom: 12px;
   }
-
   .qa-card {
     background: var(--white);
     border: 1px solid var(--border);
@@ -199,34 +210,26 @@
     transition: box-shadow 0.2s;
   }
   .qa-card:hover { box-shadow: 0 3px 10px rgba(0,0,0,0.08); }
-
   .qa-header {
     display: flex;
     align-items: flex-start;
     gap: 14px;
     padding: 16px 18px;
     cursor: pointer;
+    user-select: none;
   }
   .qa-num {
     flex-shrink: 0;
-    width: 30px;
-    height: 30px;
+    width: 30px; height: 30px;
     background: var(--green);
     color: var(--white);
     font-size: 12px;
     font-weight: 700;
     border-radius: 6px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    display: flex; align-items: center; justify-content: center;
     margin-top: 1px;
   }
-  .qa-question {
-    flex: 1;
-    font-size: 14px;
-    font-weight: 500;
-    line-height: 1.55;
-  }
+  .qa-question { flex: 1; font-size: 14px; font-weight: 500; line-height: 1.55; }
   .qa-toggle {
     font-size: 18px;
     color: var(--green);
@@ -235,7 +238,6 @@
     font-weight: 300;
     padding-top: 2px;
   }
-
   .qa-body {
     display: none;
     border-top: 1px solid var(--border);
@@ -243,7 +245,6 @@
     background: #FAFAF8;
   }
   .qa-body.open { display: block; }
-
   .correct-answer {
     background: var(--correct);
     border-left: 3px solid var(--correct-border);
@@ -254,10 +255,11 @@
     color: #1E6B3C;
     margin-bottom: 10px;
   }
-  .explanation {
+  .qa-explanation {
     font-size: 13px;
     color: var(--muted);
     line-height: 1.65;
+    margin-top: 8px;
   }
   .option-list {
     list-style: none;
@@ -279,12 +281,9 @@
     font-weight: 600;
     color: #1E6B3C;
   }
-  .option-list li.correct::before {
-    content: '✓ ';
-    font-weight: 800;
-  }
+  .option-list li.correct::before { content: '✓ '; font-weight: 800; }
 
-  /* TIP BOXES */
+  /* ─── TIP & INFO BOXES ─── */
   .tip-box {
     background: var(--warning);
     border: 1px solid var(--warning-border);
@@ -292,20 +291,260 @@
     padding: 14px 18px;
     font-size: 13px;
     margin: 16px 0;
+    line-height: 1.6;
   }
   .tip-box strong { color: #B7770D; }
-
   .info-box {
-    background: #EBF4FF;
-    border: 1px solid #93C5FD;
+    background: var(--info);
+    border: 1px solid var(--info-border);
     border-radius: 8px;
     padding: 14px 18px;
     font-size: 13px;
     margin: 16px 0;
     color: #1E40AF;
+    line-height: 1.6;
+  }
+  .danger-box {
+    background: #FEF2F2;
+    border: 1px solid #FECACA;
+    border-radius: 8px;
+    padding: 14px 18px;
+    font-size: 13px;
+    margin: 16px 0;
+    color: #991B1B;
+    line-height: 1.6;
+  }
+  .danger-box strong { color: var(--red); }
+
+  /* ─── RULE BLOCKS (expandable) ─── */
+  .rule-block {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    margin: 10px 0;
+    overflow: hidden;
+  }
+  .rule-block-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 13px 18px;
+    cursor: pointer;
+    user-select: none;
+  }
+  .rule-block-header:hover { background: #FAFAF8; }
+  .rule-icon { font-size: 16px; flex-shrink: 0; }
+  .rule-title { font-weight: 600; font-size: 14px; flex: 1; }
+  .rule-toggle-icon { color: var(--green); font-size: 16px; font-weight: 300; }
+  .rule-block-body { display: none; border-top: 1px solid var(--border); padding: 14px 18px 14px 50px; background: #FAFAF8; }
+  .rule-block-body.open { display: block; }
+  .rule-block-body ul { margin: 4px 0 0 16px; }
+  .rule-block-body li { margin-bottom: 7px; font-size: 14px; color: var(--muted); }
+  .rule-block-body li strong { color: var(--dark); }
+
+  /* ─── SECTION LABEL ─── */
+  .sublabel {
+    font-weight: 600;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+    margin-bottom: 10px;
   }
 
-  /* FOOTER */
+  /* ─── QUIZ PANEL ─── */
+  #quiz-section { display: none; }
+  #study-content { display: block; }
+
+  .quiz-start {
+    text-align: center;
+    padding: 48px 0 32px;
+  }
+  .quiz-start h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 28px;
+    color: var(--green);
+    margin-bottom: 10px;
+  }
+  .quiz-start p { color: var(--muted); max-width: 440px; margin: 0 auto 32px; font-size: 14px; }
+
+  .exam-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+    gap: 14px;
+    margin: 0 0 40px;
+    text-align: left;
+  }
+  .exam-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px 18px;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  }
+  .exam-card:hover { border-color: var(--green); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,108,53,0.12); }
+  .exam-card .e-tag {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--white);
+    background: var(--green);
+    padding: 2px 8px;
+    border-radius: 3px;
+    margin-bottom: 10px;
+  }
+  .exam-card.drill .e-tag { background: #B8860B; }
+  .exam-card .e-title { font-weight: 600; font-size: 14px; margin-bottom: 4px; color: var(--dark); }
+  .exam-card .e-desc { font-size: 12px; color: var(--muted); }
+
+  /* quiz active */
+  .quiz-active { padding: 32px 0; }
+  .q-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  }
+  .q-progress { font-size: 13px; color: var(--muted); }
+  .q-progress span { font-weight: 600; color: var(--dark); }
+  .q-timer { font-size: 18px; font-weight: 700; color: var(--green); font-variant-numeric: tabular-nums; }
+  .q-timer.warn { color: var(--red); animation: blink 1s infinite; }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.4} }
+
+  .progress-bar {
+    height: 4px;
+    background: var(--border);
+    border-radius: 2px;
+    margin-bottom: 24px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--green), var(--gold));
+    border-radius: 2px;
+    transition: width 0.3s;
+  }
+
+  .q-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 28px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    margin-bottom: 16px;
+  }
+  .q-cat {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    margin-bottom: 10px;
+  }
+  .q-text { font-size: 16px; font-weight: 500; color: var(--dark); line-height: 1.5; margin-bottom: 22px; }
+
+  .q-options { display: flex; flex-direction: column; gap: 10px; }
+  .q-option {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    cursor: pointer;
+    transition: all 0.15s;
+    font-size: 14px;
+    color: var(--muted);
+    background: var(--white);
+  }
+  .q-option:hover:not(.disabled) { border-color: var(--green); color: var(--dark); background: #F0FAF4; }
+  .q-option .opt-ltr {
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    background: var(--light);
+    border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+    flex-shrink: 0;
+    transition: all 0.15s;
+    color: var(--muted);
+  }
+  .q-option.correct { border-color: var(--correct-border); background: var(--correct); color: #1E6B3C; }
+  .q-option.correct .opt-ltr { background: var(--correct-border); color: var(--white); border-color: var(--correct-border); }
+  .q-option.wrong { border-color: var(--red); background: #FEF2F2; }
+  .q-option.wrong .opt-ltr { background: var(--red); color: var(--white); border-color: var(--red); }
+  .q-option.disabled { cursor: default; }
+
+  .q-explanation {
+    display: none;
+    margin-top: 16px;
+    background: var(--info);
+    border-left: 3px solid var(--blue);
+    border-radius: 0 6px 6px 0;
+    padding: 12px 16px;
+    font-size: 13px;
+    color: #1E40AF;
+    line-height: 1.6;
+  }
+  .q-explanation.show { display: block; }
+
+  .q-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px; }
+
+  .btn {
+    padding: 11px 24px;
+    border: none;
+    border-radius: 7px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-primary { background: var(--green); color: var(--white); }
+  .btn-primary:hover { background: var(--green-dark); }
+  .btn-gold { background: var(--gold); color: var(--dark); }
+  .btn-gold:hover { background: #EFC020; }
+  .btn-ghost { background: transparent; border: 1px solid var(--border); color: var(--muted); }
+  .btn-ghost:hover { border-color: var(--dark); color: var(--dark); }
+
+  /* results */
+  .results-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 40px;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  }
+  .score-ring {
+    width: 110px; height: 110px;
+    border-radius: 50%;
+    border: 5px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    flex-direction: column;
+    margin: 0 auto 20px;
+  }
+  .score-num { font-family: 'DM Serif Display', serif; font-size: 30px; line-height: 1; }
+  .score-pct { font-size: 12px; color: var(--muted); }
+  .results-title { font-family: 'DM Serif Display', serif; font-size: 26px; margin-bottom: 6px; }
+  .results-sub { color: var(--muted); font-size: 14px; margin-bottom: 28px; }
+  .missed-list { margin-top: 28px; text-align: left; }
+  .missed-item { background: var(--light); border: 1px solid var(--border); border-radius: 7px; padding: 14px 16px; margin-bottom: 10px; }
+  .missed-q { font-size: 14px; font-weight: 500; margin-bottom: 5px; }
+  .missed-correct { font-size: 13px; color: #1E6B3C; font-weight: 600; }
+  .missed-wrong { font-size: 13px; color: var(--red); }
+
+  /* ─── FOOTER ─── */
   footer {
     background: var(--dark);
     color: rgba(255,255,255,0.5);
@@ -316,11 +555,12 @@
   }
   footer strong { color: var(--gold); }
 
-  /* PRINT */
   @media print {
-    .nav-bar { display: none; }
+    .nav-bar, footer { display: none; }
     .qa-body { display: block !important; }
     .qa-toggle { display: none; }
+    #quiz-section { display: none !important; }
+    #study-content { display: block !important; }
   }
 </style>
 </head>
@@ -328,168 +568,277 @@
 
 <!-- HERO -->
 <div class="hero">
-  <h1>Driving Permit<br>Study Guide</h1>
+  <h1>Rwanda Driving Permit<br>Study Guide</h1>
+  <p>Based on the National Official Gazette traffic regulations and the official permit question bank.</p>
+  <div class="hero-badges">
+    <span class="badge">📋 Official Q&amp;A Bank</span>
+    <span class="badge">🚦 Traffic Laws</span>
+    <span class="badge">🎯 Practice Exams</span>
+    <span class="badge">Pass mark: 12/20</span>
+  </div>
 </div>
 
 <!-- NAV -->
 <div class="nav-bar">
-  <a href="#quickref">Quick Reference</a>
-  <a href="#definitions">Definitions</a>
-  <a href="#speed">Speed Limits</a>
-  <a href="#vehicle">Vehicle Requirements</a>
-  <a href="#lights">Lights & Reflectors</a>
-  <a href="#rules">Traffic Rules</a>
-  <a href="#signs">Road Signs</a>
-  <a href="#special">Special Situations</a>
-  <a href="practicetests.html">Practice Tests</a>
-  <a href="#fullqa">Full Q&amp;A</a>
+  <a onclick="showStudy('quickref')">Quick Reference</a>
+  <a onclick="showStudy('general')">Road Rules</a>
+  <a onclick="showStudy('speed')">Speed Limits</a>
+  <a onclick="showStudy('vehicle')">Vehicle Req.</a>
+  <a onclick="showStudy('lights')">Lights &amp; Reflectors</a>
+  <a onclick="showStudy('signs')">Road Signs</a>
+  <a onclick="showStudy('priority')">Priority</a>
+  <a onclick="showStudy('conduct')">Driver Conduct</a>
+  <a onclick="showStudy('fines')">Fines</a>
+  <a onclick="showStudy('special')">Special Situations</a>
+  <a onclick="showStudy('fullqa')">Full Q&amp;A</a>
+  <a class="quiz-nav" onclick="showQuiz()">🎯 Practice Exams →</a>
 </div>
 
+<!-- ════ STUDY CONTENT ════ -->
+<div id="study-content">
 <div class="container">
 
 <!-- ─── QUICK REFERENCE ─── -->
 <section id="quickref">
-  <p style="font-weight:600;margin-bottom:10px;font-size:13px;text-transform:uppercase;letter-spacing:0.06em;color:var(--muted);">Speed Limits</p>
+  <div class="section-title">⚡ Quick Reference — Numbers to Memorise</div>
+  <div class="section-sub">Every testable number in one place. Master these tables before anything else.</div>
+
+  <p class="sublabel">Speed Limits by Vehicle Type</p>
   <table class="ref-table">
-    <tr><th>Vehicle Type</th><th>Location</th><th>Max Speed</th><th>Q#</th></tr>
-    <tr><td>Moped (cyclomoteur)</td><td>Outside agglomeration</td><td><span class="answer-pill">50 km/h</span></td><td>Q11</td></tr>
-    <tr class="highlight"><td>Motorcycle</td><td>Default (no restrictions)</td><td><span class="answer-pill">40 km/h</span></td><td>Q14</td></tr>
-    <tr><td>Passenger service vehicles</td><td>Default (no restrictions)</td><td><span class="answer-pill">60 km/h</span></td><td>Q41</td></tr>
-    <tr><td>Taxis / Hackney carriage ≤3500kg</td><td>Default (no restrictions)</td><td><span class="answer-pill">75 km/h</span></td><td>Q42</td></tr>
-    <tr class="highlight"><td>Near pedestrian at obstacle</td><td>Any</td><td><span class="answer-pill">20 km/h max</span></td><td>Q69</td></tr>
-    <tr><td>Emergency chain fastening (towing)</td><td>Any</td><td><span class="answer-pill">20 km/h max</span></td><td>Q37</td></tr>
-    <tr><td>Agricultural vehicles with 2 red lights</td><td>Any</td><td><span class="answer-pill">20 km/h max</span></td><td>Q57</td></tr>
+    <tr><th>Vehicle / Situation</th><th>Max Speed</th><th>Notes</th></tr>
+    <tr><td>Residential / school zones</td><td><span class="answer-pill">30 km/h</span></td><td>Lowest zone limit</td></tr>
+    <tr><td>Urban areas / cities (default)</td><td><span class="answer-pill">40 km/h</span></td><td>Kigali standard</td></tr>
+    <tr><td>Rural inter-urban roads</td><td><span class="answer-pill">60 km/h</span></td><td>Outside built-up areas</td></tr>
+    <tr><td>National highways</td><td><span class="answer-pill">80 km/h</span></td><td>Absolute national maximum</td></tr>
+    <tr class="highlight"><td>Moped (cyclomoteur) — outside agglomeration</td><td><span class="answer-pill">50 km/h</span></td><td>Q11 — ceiling on all roads</td></tr>
+    <tr class="highlight"><td>Motorcycle — no specific restriction</td><td><span class="answer-pill">40 km/h</span></td><td>Q14 — lower than car limit</td></tr>
+    <tr><td>Passenger service vehicles (bus)</td><td><span class="answer-pill">60 km/h</span></td><td>Q41 — even on highway</td></tr>
+    <tr><td>Taxi / hackney carriage ≤3,500 kg</td><td><span class="answer-pill">75 km/h</span></td><td>Q42 — 5 km/h below highway max</td></tr>
+    <tr class="highlight"><td>Passing pedestrian near obstacle (if &lt;1m clearance)</td><td><span class="answer-pill">20 km/h max</span></td><td>Q69</td></tr>
+    <tr><td>Emergency chain towing</td><td><span class="answer-pill">20 km/h max</span></td><td>Q37</td></tr>
+    <tr><td>Agricultural vehicles with 2 red lights</td><td><span class="answer-pill">20 km/h max</span></td><td>Q57</td></tr>
+    <tr><td>Speedometer required above</td><td><span class="answer-pill">40 km/h</span></td><td>Q54</td></tr>
   </table>
 
-  <p style="font-weight:600;margin-bottom:10px;font-size:13px;text-transform:uppercase;letter-spacing:0.06em;color:var(--muted);">Visibility / Distance Numbers</p>
+  <p class="sublabel">Visibility / Distance Numbers</p>
   <table class="ref-table">
-    <tr><th>What</th><th>Distance</th><th>Q#</th></tr>
-    <tr><td>Danger/priority signs outside agglomeration</td><td><span class="answer-pill">150–200m from hazard</span></td><td>Q78</td></tr>
-    <tr><td>Road lights illuminate ahead (standard)</td><td><span class="answer-pill">100m</span></td><td>Q68</td></tr>
-    <tr><td>Road lights for ≤125cc engine vehicles</td><td><span class="answer-pill">85m</span></td><td>Q68</td></tr>
-    <tr><td>Dipped headlights (cross-road lights)</td><td><span class="answer-pill">40m</span></td><td>Q122</td></tr>
-    <tr><td>Brake light visible by day / by night</td><td><span class="answer-pill">200m / 100m</span></td><td>Q22</td></tr>
-    <tr><td>Loading lights visible at night</td><td><span class="answer-pill">200m</span></td><td>Q88</td></tr>
-    <tr><td>Reflectors visible at night</td><td><span class="answer-pill">150m</span></td><td>Q76</td></tr>
-    <tr><td>License plate light readable at</td><td><span class="answer-pill">20m</span></td><td>Q106</td></tr>
-    <tr><td>Headlights turned off: roadway light allows visibility of</td><td><span class="answer-pill">200m</span></td><td>Q17,Q110</td></tr>
-    <tr><td>Headlights turned off: following another vehicle closer than</td><td><span class="answer-pill">100m</span></td><td>Q110</td></tr>
-    <tr><td>Railway crossing signs visible at</td><td><span class="answer-pill">300m</span></td><td>Q116</td></tr>
+    <tr><th>Situation</th><th>Distance</th><th>Q#</th></tr>
+    <tr><td>Road lights illuminate ahead (standard vehicle)</td><td><span class="answer-pill">100 m</span></td><td>Q68</td></tr>
+    <tr><td>Road lights for ≤125cc engine vehicles</td><td><span class="answer-pill">85 m</span></td><td>Q68</td></tr>
+    <tr><td>Dipped headlights (cross-road lights)</td><td><span class="answer-pill">40 m</span></td><td>Q122</td></tr>
+    <tr><td>Brake light visible by day / by night</td><td><span class="answer-pill">200 m / 100 m</span></td><td>Q22</td></tr>
+    <tr><td>Loading lights visible at night</td><td><span class="answer-pill">200 m</span></td><td>Q88</td></tr>
+    <tr><td>Reflectors visible at night</td><td><span class="answer-pill">150 m</span></td><td>Q76</td></tr>
+    <tr><td>Licence plate light readable at</td><td><span class="answer-pill">20 m</span></td><td>Q106</td></tr>
+    <tr><td>Switch to low beam when road lighting gives visibility of</td><td><span class="answer-pill">200 m</span></td><td>Q110</td></tr>
+    <tr><td>Switch to low beam when following vehicle closer than</td><td><span class="answer-pill">100 m</span></td><td>Q110</td></tr>
+    <tr><td>Danger/priority signs outside agglomeration — placed at</td><td><span class="answer-pill">150–200 m from hazard</span></td><td>Q78</td></tr>
+    <tr><td>Railway crossing signs visible at</td><td><span class="answer-pill">300 m</span></td><td>Q116</td></tr>
+    <tr><td>Horn audible — standard motor vehicle</td><td><span class="answer-pill">100 m</span></td><td>Q77</td></tr>
+    <tr><td>Horn audible — slow vehicle (≤50 km/h flat)</td><td><span class="answer-pill">50 m</span></td><td>Q23</td></tr>
+    <tr><td>Horn audible — moped</td><td><span class="answer-pill">20 m</span></td><td>Q85</td></tr>
   </table>
 
-  <p style="font-weight:600;margin-bottom:10px;font-size:13px;text-transform:uppercase;letter-spacing:0.06em;color:var(--muted);">Light Mounting Heights</p>
+  <p class="sublabel">Light Mounting Heights</p>
   <table class="ref-table">
     <tr><th>Measurement</th><th>Value</th><th>Q#</th></tr>
-    <tr><td>Minimum height of any light/reflector from ground</td><td><span class="answer-pill">40cm</span></td><td>Q49</td></tr>
-    <tr><td>Maximum height of position lights from ground</td><td><span class="answer-pill">1.90m</span></td><td>Q51</td></tr>
-    <tr><td>Exception to 40cm rule</td><td>Fog lights &amp; reversing lights</td><td>Q75</td></tr>
+    <tr><td>Minimum height of any light / reflector from ground</td><td><span class="answer-pill">40 cm</span></td><td>Q49</td></tr>
+    <tr><td>Maximum height of position lights from ground</td><td><span class="answer-pill">1.90 m</span></td><td>Q51</td></tr>
+    <tr><td>Exception: fog lights &amp; reversing lights may be below 40 cm</td><td><span class="answer-pill">Yes — exempt</span></td><td>Q75</td></tr>
   </table>
 
-  <p style="font-weight:600;margin-bottom:10px;font-size:13px;text-transform:uppercase;letter-spacing:0.06em;color:var(--muted);">Vehicle Dimensions &amp; Weights</p>
+  <p class="sublabel">Reflector Colours — Memorise These</p>
+  <table class="ref-table">
+    <tr><th>Item</th><th>Colour</th></tr>
+    <tr><td>Side reflectors (on vehicle body)</td><td><span class="answer-pill gold">YELLOW</span></td></tr>
+    <tr><td>Road border — RIGHT side (driver's right)</td><td><span class="answer-pill red">RED / ORANGE</span></td></tr>
+    <tr><td>Road border — LEFT side (oncoming)</td><td><span class="answer-pill" style="background:#555">WHITE</span></td></tr>
+    <tr><td>Front position lights</td><td><span class="answer-pill" style="background:#555">WHITE or YELLOW</span></td></tr>
+    <tr><td>Rear position lights</td><td><span class="answer-pill red">RED</span></td></tr>
+    <tr><td>Direction indicator — front</td><td><span class="answer-pill" style="background:#555">WHITE or YELLOW</span></td></tr>
+    <tr><td>Direction indicator — rear</td><td><span class="answer-pill red">RED or ORANGE</span></td></tr>
+  </table>
+
+  <p class="sublabel">Vehicle Dimensions &amp; Weights</p>
   <table class="ref-table">
     <tr><th>Subject</th><th>Value</th><th>Q#</th></tr>
-    <tr><td>Max length – single-axle vehicles</td><td><span class="answer-pill">11m</span></td><td>Q7</td></tr>
-    <tr><td>Max length – two oscillating axles</td><td><span class="answer-pill">7m</span></td><td>Q64</td></tr>
-    <tr><td>Max width – trailer pulled by bicycle/moped</td><td><span class="answer-pill">45cm</span></td><td>Q19</td></tr>
-    <tr><td>Max width – trailer pulled by tricycle</td><td><span class="answer-pill">125cm</span></td><td>Q6</td></tr>
-    <tr><td>Max width – motorcycle (no sidecar) loading</td><td><span class="answer-pill">1.25m</span></td><td>Q55</td></tr>
-    <tr><td>Max width – bulk cereals/grass loading</td><td><span class="answer-pill">2.75m</span></td><td>Q61</td></tr>
-    <tr><td>Max width – bulk cereals, within 25km, not urban</td><td><span class="answer-pill">3m</span></td><td>Q119</td></tr>
-    <tr><td>Loading lights required when vehicle width exceeds</td><td><span class="answer-pill">2.10m</span></td><td>Q48</td></tr>
-    <tr><td>Rear overhang of loading on bicycles/motorcycles</td><td><span class="answer-pill">50cm</span></td><td>Q73</td></tr>
-    <tr><td>Max rear overhang (line of vehicles)</td><td><span class="answer-pill">3.50m</span></td><td>Q59</td></tr>
-    <tr><td>Max front overhang (line of vehicles)</td><td><span class="answer-pill">1.70m</span></td><td>Q59</td></tr>
-    <tr><td>Max weight – 3+ axle vehicles outside urban (not semi)</td><td><span class="answer-pill">16 tonnes</span></td><td>Q38</td></tr>
-    <tr><td>Max weight – articulated vehicles 3 axles outside urban</td><td><span class="answer-pill">12 tonnes</span></td><td>Q62</td></tr>
+    <tr><td>Max length — single-axle vehicles</td><td><span class="answer-pill">11 m</span></td><td>Q7</td></tr>
+    <tr><td>Max length — two oscillating axles</td><td><span class="answer-pill">7 m</span></td><td>Q64</td></tr>
+    <tr><td>Max width — trailer pulled by bicycle/moped</td><td><span class="answer-pill">45 cm</span></td><td>Q19</td></tr>
+    <tr><td>Max width — trailer pulled by tricycle</td><td><span class="answer-pill">125 cm</span></td><td>Q6</td></tr>
+    <tr><td>Max width — motorcycle loading (no sidecar)</td><td><span class="answer-pill">1.25 m</span></td><td>Q55</td></tr>
+    <tr><td>Max width — bulk cereals/grass loading</td><td><span class="answer-pill">2.75 m</span></td><td>Q61</td></tr>
+    <tr><td>Max width — bulk cereals, within 25 km, not urban</td><td><span class="answer-pill">3 m</span></td><td>Q119</td></tr>
+    <tr><td>Loading lights required when width exceeds</td><td><span class="answer-pill">2.10 m</span></td><td>Q48</td></tr>
+    <tr><td>Rear overhang — bicycles/motorcycles</td><td><span class="answer-pill">50 cm</span></td><td>Q73</td></tr>
+    <tr><td>Max rear overhang — line of vehicles</td><td><span class="answer-pill">3.50 m</span></td><td>Q59</td></tr>
+    <tr><td>Max front overhang — line of vehicles</td><td><span class="answer-pill">1.70 m</span></td><td>Q59</td></tr>
+    <tr><td>Max weight — 3+ axle vehicles outside urban (not semi)</td><td><span class="answer-pill">16 tonnes</span></td><td>Q38</td></tr>
+    <tr><td>Max weight — articulated vehicles 3 axles outside urban</td><td><span class="answer-pill">12 tonnes</span></td><td>Q62</td></tr>
     <tr><td>Max lorry load in urban / national roads</td><td><span class="answer-pill">16 tonnes</span></td><td>Q120</td></tr>
-    <tr><td>Speed indicator required for vehicles likely to exceed</td><td><span class="answer-pill">40 km/h</span></td><td>Q54</td></tr>
-    <tr><td>Parking space for pedestrians (on pavement)</td><td><span class="answer-pill">1 meter</span></td><td>Q92</td></tr>
     <tr><td>Children forbidden on front seat under age</td><td><span class="answer-pill">12 years</span></td><td>Q27</td></tr>
-    <tr><td>Registration change must be notified within</td><td><span class="answer-pill">15 days</span></td><td>Q123</td></tr>
-    <tr><td>Convoy maximum length</td><td><span class="answer-pill">500m</span></td><td>Q98, Q115</td></tr>
-    <tr><td>Convoy sub-groups maximum length</td><td><span class="answer-pill">50m</span></td><td>Q115</td></tr>
-    <tr><td>Interval between convoy sub-groups (minimum)</td><td><span class="answer-pill">50m</span></td><td>Q98</td></tr>
+    <tr><td>Registration change — notify within</td><td><span class="answer-pill">15 days</span></td><td>Q123</td></tr>
+    <tr><td>Convoy maximum length</td><td><span class="answer-pill">500 m</span></td><td>Q98, Q115</td></tr>
+    <tr><td>Convoy sub-groups maximum length</td><td><span class="answer-pill">50 m</span></td><td>Q115</td></tr>
+    <tr><td>Interval between convoy sub-groups</td><td><span class="answer-pill">50 m min</span></td><td>Q98</td></tr>
     <tr><td>Animal train exceeds 18m → need</td><td><span class="answer-pill">1 conveyor</span></td><td>Q99</td></tr>
-    <tr><td>Heavy vehicle interval rule applies when weight exceeds</td><td><span class="answer-pill">3,500 kg</span> or length &gt;10m</td><td>Q80</td></tr>
+    <tr><td>Heavy vehicle interval rule: weight exceeds</td><td><span class="answer-pill">3,500 kg</span> or length &gt;10 m</td><td>Q80</td></tr>
   </table>
 
-  <p style="font-weight:600;margin-bottom:10px;font-size:13px;text-transform:uppercase;letter-spacing:0.06em;color:var(--muted);">Vehicle Inspections</p>
+  <p class="sublabel">Vehicle Inspections</p>
   <table class="ref-table">
     <tr><th>Frequency</th><th>Vehicles</th><th>Q#</th></tr>
-    <tr><td><span class="answer-pill">Every 6 months</span></td><td>Public transport, goods vehicles >3.5t, driving school vehicles</td><td>Q33</td></tr>
-    <tr><td><span style="background:#C0392B" class="answer-pill">NOT every year</span></td><td>Same as above — Q5 answer is "None" (they are inspected 6-monthly)</td><td>Q5</td></tr>
+    <tr><td><span class="answer-pill">Every 6 months</span></td><td>Public transport, goods vehicles &gt;3.5 t, driving school vehicles</td><td>Q33</td></tr>
+    <tr><td><span class="answer-pill red">NOT every year</span></td><td>Same as above — Q5 answer is "None" (they are inspected 6-monthly, not annually)</td><td>Q5</td></tr>
+  </table>
+
+  <p class="sublabel">Fines &amp; Enforcement</p>
+  <table class="ref-table">
+    <tr><th>Offence</th><th>Fine</th><th>Notes</th></tr>
+    <tr><td>Speeding</td><td><span class="answer-pill red">RWF 50,000</span></td><td>Repeat offence × 9 = RWF 450,000</td></tr>
+    <tr><td>No seat belt</td><td><span class="answer-pill red">RWF 10,000</span></td><td>Per unbelted passenger</td></tr>
+    <tr><td>Traffic sign violation</td><td><span class="answer-pill red">RWF 10,000</span></td><td>—</td></tr>
+    <tr><td>Blood alcohol limit (BAC)</td><td><span class="answer-pill red">0.08%</span></td><td>Zero-tolerance for new/professional drivers</td></tr>
+    <tr><td>Repeat offence multiplier</td><td><span class="answer-pill red">× 9</span></td><td>Same offence within the defined period</td></tr>
+    <tr><td>Emergency police number</td><td><span class="answer-pill">112</span></td><td>Rwanda National Police</td></tr>
+    <tr><td>Permit pass mark (most centres)</td><td><span class="answer-pill">12 / 20 (60%)</span></td><td>Busanza Automated Centre: 60%+</td></tr>
   </table>
 </section>
 
-<!-- ─── DEFINITIONS ─── -->
-<section id="definitions">
-  <div class="section-sub">Terminology that appears directly in exam questions.</div>
-  <div class="qa-grid">
+<!-- ─── GENERAL ROAD RULES ─── -->
+<section id="general">
+  <div class="section-title">🚗 General Road Rules</div>
+  <div class="section-sub">Core rules that apply to every driver on every road.</div>
 
-    <div class="qa-card">
-      <div class="qa-header" onclick="toggle(this)">
-        <div class="qa-num">2</div>
-        <div class="qa-question">The term "Foot path" designates a narrow public way accessible only to the traffic of:</div>
-        <div class="qa-toggle">+</div>
-      </div>
-      <div class="qa-body">
-        <div class="correct-answer">✓ Correct Answer: (a) Pedestrians</div>
-        <ul class="option-list">
-          <li class="correct">(a) Pedestrians</li>
-          <li>(b) Two-wheel vehicles</li>
-          <li>(c) A and B both correct</li>
-          <li>(d) All responses are correct</li>
-        </ul>
-        <div class="explanation">A footpath is exclusively for pedestrians. Two-wheel vehicles and cyclists have their own designated lanes (cycle paths).</div>
-      </div>
+  <div class="tip-box">
+    <strong>Driving Side:</strong> Rwanda drives on the <strong>RIGHT side</strong> of the road. The steering wheel is on the <strong>LEFT side</strong> of the vehicle. This differs from Kenya and Uganda, which drive on the left.
+  </div>
+
+  <div class="rule-block">
+    <div class="rule-block-header" onclick="toggleRule(this)">
+      <span class="rule-icon">↔️</span>
+      <span class="rule-title">Overtaking (Passing)</span>
+      <span class="rule-toggle-icon">▾</span>
     </div>
-
-    <div class="qa-card">
-      <div class="qa-header" onclick="toggle(this)">
-        <div class="qa-num">1</div>
-        <div class="qa-question">Every vehicle or set of vehicles in motion must have:</div>
-        <div class="qa-toggle">+</div>
-      </div>
-      <div class="qa-body">
-        <div class="correct-answer">✓ Correct Answer: (c) A and B are correct</div>
-        <ul class="option-list">
-          <li>(a) A driver</li>
-          <li>(b) A conveyor</li>
-          <li class="correct">(c) A and B are correct</li>
-          <li>(d) No correct answer</li>
-        </ul>
-        <div class="explanation">Every vehicle in motion requires both a driver and a conveyor (escort/attendant).</div>
-      </div>
+    <div class="rule-block-body">
+      <ul>
+        <li><strong>Always overtake on the LEFT</strong> — pass on the left side of the vehicle ahead (into the oncoming lane).</li>
+        <li>Overtaking on the right (undertaking) is <strong>prohibited</strong> — the driver cannot see you from their blind side.</li>
+        <li>Overtaking is forbidden near bridges with narrow roadways, near pedestrian crossings, and on dangerous road sections.</li>
+        <li>Solid white centre line = no overtaking. Broken white centre line = overtaking permitted when safe.</li>
+      </ul>
     </div>
+  </div>
 
-    <div class="qa-card">
-      <div class="qa-header" onclick="toggle(this)">
-        <div class="qa-num">25</div>
-        <div class="qa-question">The section of highway delineated by two broken parallel white lines, too narrow for cars, constitutes a passage for:</div>
-        <div class="qa-toggle">+</div>
-      </div>
-      <div class="qa-body">
-        <div class="correct-answer">✓ Correct Answer: (a) Bicycles and mopeds</div>
-        <ul class="option-list">
-          <li class="correct">(a) Bicycles and mopeds</li>
-          <li>(b) Wheelbarrows</li>
-          <li>(c) Cycles</li>
-          <li>(d) No correct answer</li>
-        </ul>
-        <div class="explanation">A lane marked by two broken white parallel lines that is too narrow for automobiles is a dedicated cycle path for bicycles and mopeds.</div>
-      </div>
+  <div class="rule-block">
+    <div class="rule-block-header" onclick="toggleRule(this)">
+      <span class="rule-icon">🔄</span>
+      <span class="rule-title">Roundabouts</span>
+      <span class="rule-toggle-icon">▾</span>
+    </div>
+    <div class="rule-block-body">
+      <ul>
+        <li>Vehicles <strong>already inside</strong> the roundabout have <strong>right of way</strong>. Entering vehicles must yield.</li>
+        <li>Yield to traffic coming from the right when entering.</li>
+        <li>Signal right before exiting. Do not change lanes inside unless markings allow it.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="rule-block">
+    <div class="rule-block-header" onclick="toggleRule(this)">
+      <span class="rule-icon">💺</span>
+      <span class="rule-title">Seat Belts &amp; Child Safety</span>
+      <span class="rule-toggle-icon">▾</span>
+    </div>
+    <div class="rule-block-body">
+      <ul>
+        <li>Mandatory for <strong>all passengers</strong> — front and rear seats.</li>
+        <li>Fine for violation: <strong>RWF 10,000</strong> per unbelted passenger.</li>
+        <li><strong>Children under 3</strong> must be in an approved child restraint (car seat).</li>
+        <li><strong>Children under 12</strong> cannot sit in the <strong>front seat</strong> — even when no other seats are available.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="rule-block">
+    <div class="rule-block-header" onclick="toggleRule(this)">
+      <span class="rule-icon">🚶</span>
+      <span class="rule-title">Pedestrians</span>
+      <span class="rule-toggle-icon">▾</span>
+    </div>
+    <div class="rule-block-body">
+      <ul>
+        <li>Pedestrians have <strong>right of way</strong> at zebra crossings. Drivers must <strong>stop completely</strong>.</li>
+        <li>When passing a pedestrian near an obstacle, if a 1 m free space cannot be maintained, maximum speed is <strong>20 km/h</strong>.</li>
+        <li>Pavements and shoulders are reserved for pedestrians when no special regulation is posted.</li>
+        <li>Parking is forbidden where pedestrians must use the roadway to pass an obstacle.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="rule-block">
+    <div class="rule-block-header" onclick="toggleRule(this)">
+      <span class="rule-icon">📱</span>
+      <span class="rule-title">Mobile Phones &amp; Distractions</span>
+      <span class="rule-toggle-icon">▾</span>
+    </div>
+    <div class="rule-block-body">
+      <ul>
+        <li>Using a mobile phone while driving is <strong>prohibited</strong> unless using a hands-free device.</li>
+        <li>Includes talking, texting, or browsing — any active use of the device.</li>
+        <li>Pull over to a safe location before making a call.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="rule-block">
+    <div class="rule-block-header" onclick="toggleRule(this)">
+      <span class="rule-icon">🍺</span>
+      <span class="rule-title">Alcohol &amp; Drugs</span>
+      <span class="rule-toggle-icon">▾</span>
+    </div>
+    <div class="rule-block-body">
+      <ul>
+        <li>Legal blood alcohol concentration (BAC) limit: <strong>0.08%</strong>.</li>
+        <li>Zero-tolerance is commonly applied to new and professional drivers.</li>
+        <li>Penalties: heavy fines, licence suspension, or imprisonment.</li>
+        <li>Random breathalyser checkpoints are common, especially at night and on weekends.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="rule-block">
+    <div class="rule-block-header" onclick="toggleRule(this)">
+      <span class="rule-icon">🚨</span>
+      <span class="rule-title">Emergency Vehicles</span>
+      <span class="rule-toggle-icon">▾</span>
+    </div>
+    <div class="rule-block-body">
+      <ul>
+        <li>Pull to the <strong>right</strong> and stop when an emergency vehicle approaches with sirens and lights.</li>
+        <li>Blue flashing lights visible in all directions = priority vehicle.</li>
+        <li>Do not follow closely behind emergency vehicles in motion.</li>
+        <li>Emergency number: <strong>112</strong>.</li>
+      </ul>
     </div>
   </div>
 </section>
 
-<!-- ─── SPEED LIMITS ─── -->
+<!-- ─── SPEED LIMITS (Q&A) ─── -->
 <section id="speed">
-  <div class="qa-grid">
+  <div class="section-title">🚀 Speed Limits</div>
+  <div class="section-sub">Vehicle-type limits override zone limits — a bus on a highway is still limited to 60 km/h.</div>
 
+  <div class="danger-box">
+    <strong>Speeding fine: RWF 50,000.</strong> Repeat offence within the same period = fine × 9 (RWF 450,000). Speed cameras and police radar guns are routinely deployed in Kigali and on national roads.
+  </div>
+
+  <div class="qa-grid">
     <div class="qa-card">
       <div class="qa-header" onclick="toggle(this)">
         <div class="qa-num">11</div>
-        <div class="qa-question">Out of agglomeration, the maximum speed of a moped is:</div>
+        <div class="qa-question">Out of agglomeration, the maximum speed of a moped (cyclomoteur) is:</div>
         <div class="qa-toggle">+</div>
       </div>
       <div class="qa-body">
@@ -500,7 +849,7 @@
           <li>(c) 30 km/h</li>
           <li>(d) No correct answer</li>
         </ul>
-        <div class="explanation">Outside built-up areas, mopeds (cyclomoteurs) are limited to 50 km/h.</div>
+        <div class="qa-explanation">Outside built-up areas, mopeds are limited to 50 km/h. This is the ceiling on all roads for mopeds.</div>
       </div>
     </div>
 
@@ -518,7 +867,7 @@
           <li class="correct">(c) 40 km/h</li>
           <li>(d) No correct answer</li>
         </ul>
-        <div class="explanation">In the absence of more restrictive rules, motorcycles are limited to 40 km/h under Rwanda's road code.</div>
+        <div class="qa-explanation">In the absence of more restrictive rules, motorcycles are limited to 40 km/h — note this is lower than the urban car limit.</div>
       </div>
     </div>
 
@@ -536,7 +885,7 @@
           <li>(c) 25 km/h</li>
           <li>(d) 20 km/h</li>
         </ul>
-        <div class="explanation">Default maximum for public transport (passenger service) vehicles is 60 km/h where no specific limit is posted.</div>
+        <div class="qa-explanation">Default maximum for public transport (passenger service) vehicles is 60 km/h — even on highways.</div>
       </div>
     </div>
 
@@ -554,14 +903,14 @@
           <li class="correct">(c) 75 km/h</li>
           <li>(d) 20 km/h</li>
         </ul>
-        <div class="explanation">Taxis and hackney carriages weighing up to 3,500 kg have a default maximum of 75 km/h without specific posted restrictions.</div>
+        <div class="qa-explanation">Taxis and hackney carriages ≤3,500 kg default to 75 km/h — 5 km/h below the 80 km/h highway maximum.</div>
       </div>
     </div>
 
     <div class="qa-card">
       <div class="qa-header" onclick="toggle(this)">
         <div class="qa-num">69</div>
-        <div class="qa-question">When passing a pedestrian near an obstacle, if a 1m free space cannot be left, the driver can only pass at a maximum speed of:</div>
+        <div class="qa-question">When passing a pedestrian near an obstacle and a 1 m free space cannot be left, the driver may pass at a maximum speed of:</div>
         <div class="qa-toggle">+</div>
       </div>
       <div class="qa-body">
@@ -572,7 +921,7 @@
           <li>(c) 30 km/h</li>
           <li>(d) No correct answer</li>
         </ul>
-        <div class="explanation">When passing an obstacle that forces pedestrians onto the roadway, you must leave at least 1m free. If this is impossible, you must pass the pedestrian at no more than 20 km/h.</div>
+        <div class="qa-explanation">Mandatory 1 m clearance for pedestrians near obstacles. If impossible, pass at max 20 km/h.</div>
       </div>
     </div>
 
@@ -590,7 +939,7 @@
           <li>(c) 30 km/h</li>
           <li>(d) 25 km/h</li>
         </ul>
-        <div class="explanation">Any vehicle capable of exceeding 40 km/h on a flat surface must be equipped with a speed indicator clearly visible to the driver and maintained in good working condition.</div>
+        <div class="qa-explanation">Any vehicle capable of exceeding 40 km/h on a flat surface must have a speed indicator clearly visible to the driver.</div>
       </div>
     </div>
   </div>
@@ -598,9 +947,14 @@
 
 <!-- ─── VEHICLE REQUIREMENTS ─── -->
 <section id="vehicle">
-  <div class="section-sub">Brakes, wipers, dimensions, weights, inspections.</div>
-  <div class="qa-grid">
+  <div class="section-title">🔧 Vehicle Requirements</div>
+  <div class="section-sub">Brakes, wipers, dimensions, weights, inspections, and licence categories.</div>
 
+  <div class="tip-box">
+    <strong>Brake Types — Know All Three:</strong> Service brake = normal driving stop | Parking brake = holds vehicle on 16% slope mechanically | Emergency brake = backup when service brake fails.
+  </div>
+
+  <div class="qa-grid">
     <div class="qa-card">
       <div class="qa-header" onclick="toggle(this)">
         <div class="qa-num">33</div>
@@ -615,7 +969,7 @@
           <li>(c) Driving school vehicles</li>
           <li class="correct">(d) All answers are correct</li>
         </ul>
-        <div class="explanation">All three categories — public transport, goods vehicles >3.5t, and driving school vehicles — must undergo roadworthiness inspections every 6 months.</div>
+        <div class="qa-explanation">All three categories — public transport, goods vehicles &gt;3.5 t, and driving school vehicles — require 6-monthly inspections.</div>
       </div>
     </div>
 
@@ -629,11 +983,11 @@
         <div class="correct-answer">✓ Correct Answer: (d) No correct answer</div>
         <ul class="option-list">
           <li>(a) Public service vehicles</li>
-          <li>(b) Goods vehicles >3.5 tonnes</li>
+          <li>(b) Goods vehicles &gt;3.5 tonnes</li>
           <li>(c) Driving school vehicles</li>
           <li class="correct">(d) No correct answer</li>
         </ul>
-        <div class="explanation">Key trap question. These vehicles need inspection every 6 months (Q33), NOT annually. The correct answer for "annually" is "none" — so (d) is correct.</div>
+        <div class="qa-explanation"><strong>Trap question.</strong> These vehicles are inspected every 6 months (Q33), NOT annually. The answer to "annually" is none — select (d).</div>
       </div>
     </div>
 
@@ -644,14 +998,13 @@
         <div class="qa-toggle">+</div>
       </div>
       <div class="qa-body">
-        <div class="correct-answer">✓ Correct Answer: (c) Emergency brake (Frein de secours)</div>
+        <div class="correct-answer">✓ Correct Answer: (c) Emergency brake</div>
         <ul class="option-list">
           <li>(a) Service brake</li>
           <li>(b) Parking brake</li>
           <li class="correct">(c) Emergency brake</li>
           <li>(d) No correct answer</li>
         </ul>
-        <div class="explanation">Know all three brake types: <strong>Service brake</strong> = normal driving brake; <strong>Parking brake</strong> = holds vehicle stationary on slopes; <strong>Emergency brake</strong> = backup system used when service brake fails.</div>
       </div>
     </div>
 
@@ -669,7 +1022,6 @@
           <li>(c) Parking brake</li>
           <li>(d) No correct answer</li>
         </ul>
-        <div class="explanation">The service brake is the primary working brake — designed to slow and stop efficiently regardless of vehicle load or road gradient.</div>
       </div>
     </div>
 
@@ -687,7 +1039,23 @@
           <li>(c) Emergency brake</li>
           <li>(d) No correct answer</li>
         </ul>
-        <div class="explanation">The parking brake uses purely mechanical action to hold the vehicle on a 16% slope without any hydraulic or driver input.</div>
+      </div>
+    </div>
+
+    <div class="qa-card">
+      <div class="qa-header" onclick="toggle(this)">
+        <div class="qa-num">27</div>
+        <div class="qa-question">Even when no other seats are available, it is forbidden to carry children under what age on the front seat?</div>
+        <div class="qa-toggle">+</div>
+      </div>
+      <div class="qa-body">
+        <div class="correct-answer">✓ Correct Answer: (a) 12 years</div>
+        <ul class="option-list">
+          <li class="correct">(a) 12 years</li>
+          <li>(b) 10 years</li>
+          <li>(c) 7 years</li>
+          <li>(d) No correct answer</li>
+        </ul>
       </div>
     </div>
 
@@ -705,32 +1073,14 @@
           <li class="correct">(c) 1</li>
           <li>(d) No correct answer</li>
         </ul>
-        <div class="explanation">The law requires at minimum 1 windscreen wiper per vehicle. Most vehicles have 2, but the legal minimum is 1.</div>
-      </div>
-    </div>
-
-    <div class="qa-card">
-      <div class="qa-header" onclick="toggle(this)">
-        <div class="qa-num">27</div>
-        <div class="qa-question">When no other seats are available, it is forbidden to carry children under what age on the front seat?</div>
-        <div class="qa-toggle">+</div>
-      </div>
-      <div class="qa-body">
-        <div class="correct-answer">✓ Correct Answer: (a) 12 years</div>
-        <ul class="option-list">
-          <li class="correct">(a) 12 years</li>
-          <li>(b) 10 years</li>
-          <li>(c) 7 years</li>
-          <li>(d) No correct answer</li>
-        </ul>
-        <div class="explanation">Children under 12 are forbidden from occupying the front seat even when no other seats are available.</div>
+        <div class="qa-explanation">Most vehicles have 2 wipers, but the legal minimum is 1.</div>
       </div>
     </div>
 
     <div class="qa-card">
       <div class="qa-header" onclick="toggle(this)">
         <div class="qa-num">95</div>
-        <div class="qa-question">Vehicles for <6 occupants must have security belts for:</div>
+        <div class="qa-question">Vehicles for &lt;6 occupants must have security belts for:</div>
         <div class="qa-toggle">+</div>
       </div>
       <div class="qa-body">
@@ -741,7 +1091,6 @@
           <li>(c) Can also have belts on rear seats</li>
           <li class="correct">(d) All answers are correct</li>
         </ul>
-        <div class="explanation">Safety belts are mandatory for both the driver and front passenger. Rear belts are permitted but not legally required in all cases.</div>
       </div>
     </div>
 
@@ -759,7 +1108,6 @@
           <li class="correct">(c) 24 tonnes</li>
           <li>(d) No correct answer</li>
         </ul>
-        <div class="explanation">Speed limit marking plates are only required on very heavy vehicles exceeding 24 tonnes authorized weight.</div>
       </div>
     </div>
 
@@ -777,7 +1125,6 @@
           <li class="correct">(c) 15 days</li>
           <li>(d) No correct answer</li>
         </ul>
-        <div class="explanation">Any change to vehicle registration or owner details must be reported within 15 days, either verbally or by registered letter.</div>
       </div>
     </div>
   </div>
@@ -785,12 +1132,14 @@
 
 <!-- ─── LIGHTS & REFLECTORS ─── -->
 <section id="lights">
+  <div class="section-title">💡 Lights &amp; Reflectors</div>
+  <div class="section-sub">Colour, position, and visibility distances — all are testable.</div>
+
   <div class="tip-box">
-    <strong>Color Code to Memorize:</strong> Front position lights = white or yellow | Rear position lights = red | Side reflectors = yellow | Road border reflectors: right side = red/orange, left side = white | Direction indicators: front = white/yellow, rear = red/orange
+    <strong>Colour Code:</strong> Front position lights = white or yellow | Rear position lights = red | Side reflectors = <strong>yellow</strong> | Road border right = <strong>red/orange</strong> | Road border left = <strong>white</strong> | Direction indicators: front = white/yellow, rear = red/orange
   </div>
 
   <div class="qa-grid">
-
     <div class="qa-card">
       <div class="qa-header" onclick="toggle(this)">
         <div class="qa-num">17</div>
@@ -800,12 +1149,11 @@
       <div class="qa-body">
         <div class="correct-answer">✓ Correct Answer: (d) All responses are correct</div>
         <ul class="option-list">
-          <li>(a) Road lighting allows seeing distinctly up to 20m</li>
+          <li>(a) Road lighting allows seeing distinctly up to 200 m</li>
           <li>(b) Vehicle is about to cross another</li>
-          <li>(c) In agglomeration</li>
+          <li>(c) In agglomeration (built-up area)</li>
           <li class="correct">(d) All responses are correct</li>
         </ul>
-        <div class="explanation">All three situations require turning off full headlights: continuous roadway lighting enabling 20m visibility, when crossing an oncoming vehicle, and when inside a built-up area.</div>
       </div>
     </div>
 
@@ -816,14 +1164,13 @@
         <div class="qa-toggle">+</div>
       </div>
       <div class="qa-body">
-        <div class="correct-answer">✓ Correct Answer: (c) A and B are correct</div>
+        <div class="correct-answer">✓ Correct Answer: (c) A and B are both correct</div>
         <ul class="option-list">
-          <li>(a) Road lighting allows visibility to approximately 200m</li>
-          <li>(b) Following another vehicle closer than 100m (unless intending to overtake)</li>
+          <li>(a) Road lighting allows visibility to approximately 200 m</li>
+          <li>(b) Following another vehicle closer than 100 m (unless intending to overtake)</li>
           <li class="correct">(c) A and B are both correct</li>
           <li>(d) No correct answer</li>
         </ul>
-        <div class="explanation">Key numbers: switch off headlights when continuous road lighting gives 200m visibility, OR when following within 100m (except to signal overtaking intention).</div>
       </div>
     </div>
 
@@ -834,38 +1181,20 @@
         <div class="qa-toggle">+</div>
       </div>
       <div class="qa-body">
-        <div class="correct-answer">✓ Correct Answer: (c) 200m by day and 100m at night</div>
+        <div class="correct-answer">✓ Correct Answer: (c) 200 m by day and 100 m at night</div>
         <ul class="option-list">
-          <li>(a) 100m day / 20m night</li>
-          <li>(b) 150m day / 50m night</li>
-          <li class="correct">(c) 200m day / 100m night</li>
-          <li>(d) None correct</li>
+          <li>(a) 100 m day / 20 m night</li>
+          <li>(b) 150 m day / 50 m night</li>
+          <li class="correct">(c) 200 m day / 100 m night</li>
+          <li>(d) No correct answer</li>
         </ul>
-      </div>
-    </div>
-
-    <div class="qa-card">
-      <div class="qa-header" onclick="toggle(this)">
-        <div class="qa-num">56</div>
-        <div class="qa-question">Which vehicles must have a flashing blue light visible in all directions?</div>
-        <div class="qa-toggle">+</div>
-      </div>
-      <div class="qa-body">
-        <div class="correct-answer">✓ Correct Answer: (c) Priority vehicles</div>
-        <ul class="option-list">
-          <li>(a) Vehicles wider than 2.10m</li>
-          <li>(b) National police vehicles</li>
-          <li class="correct">(c) Priority vehicles</li>
-          <li>(d) All answers correct</li>
-        </ul>
-        <div class="explanation">The flashing blue light is reserved for priority vehicles (ambulances, fire trucks, etc.) — not merely wide vehicles or police cars.</div>
       </div>
     </div>
 
     <div class="qa-card">
       <div class="qa-header" onclick="toggle(this)">
         <div class="qa-num">66</div>
-        <div class="qa-question">Reflectors placed on the sides of a vehicle are what color?</div>
+        <div class="qa-question">Reflectors placed on the sides of a vehicle are what colour?</div>
         <div class="qa-toggle">+</div>
       </div>
       <div class="qa-body">
@@ -881,8 +1210,8 @@
 
     <div class="qa-card">
       <div class="qa-header" onclick="toggle(this)">
-        <div class="qa-num">79 </div>
-        <div class="qa-question">Road border reflectors: what colors do road users see on each side?</div>
+        <div class="qa-num">79</div>
+        <div class="qa-question">Road border reflectors — what colours do road users see on each side?</div>
         <div class="qa-toggle">+</div>
       </div>
       <div class="qa-body">
@@ -893,7 +1222,42 @@
           <li class="correct">(c) A and B are both correct</li>
           <li>(d) No correct answer</li>
         </ul>
-        <div class="explanation">Road borders are marked with reflectors so users see: <strong>red or orange on their right</strong> (matching direction of travel), and <strong>white on their left</strong> (oncoming side).</div>
+      </div>
+    </div>
+
+    <div class="qa-card">
+      <div class="qa-header" onclick="toggle(this)">
+        <div class="qa-num">56</div>
+        <div class="qa-question">Which vehicles must have a flashing blue light visible in all directions?</div>
+        <div class="qa-toggle">+</div>
+      </div>
+      <div class="qa-body">
+        <div class="correct-answer">✓ Correct Answer: (c) Priority vehicles</div>
+        <ul class="option-list">
+          <li>(a) Vehicles wider than 2.10 m</li>
+          <li>(b) National police vehicles</li>
+          <li class="correct">(c) Priority vehicles</li>
+          <li>(d) All answers correct</li>
+        </ul>
+        <div class="qa-explanation">The flashing blue light is reserved for priority vehicles (ambulances, fire trucks, etc.).</div>
+      </div>
+    </div>
+
+    <div class="qa-card">
+      <div class="qa-header" onclick="toggle(this)">
+        <div class="qa-num">63</div>
+        <div class="qa-question">The light allowing a driver to signal they noticed someone about to overtake them is what colour?</div>
+        <div class="qa-toggle">+</div>
+      </div>
+      <div class="qa-body">
+        <div class="correct-answer">✓ Correct Answer: (b) Green</div>
+        <ul class="option-list">
+          <li>(a) Yellow</li>
+          <li class="correct">(b) Green</li>
+          <li>(c) White</li>
+          <li>(d) Red</li>
+        </ul>
+        <div class="qa-explanation">A green light at the rear-left signals to an overtaking driver: "I have noticed your intention to pass."</div>
       </div>
     </div>
 
@@ -911,7 +1275,6 @@
           <li>(c) Yellow light at the back</li>
           <li class="correct">(d) A and C are the right answers</li>
         </ul>
-        <div class="explanation">A free taxi is indicated by a green light at the front AND a yellow light at the rear.</div>
       </div>
     </div>
 
@@ -934,8 +1297,42 @@
 
     <div class="qa-card">
       <div class="qa-header" onclick="toggle(this)">
+        <div class="qa-num">68</div>
+        <div class="qa-question">Road lights must illuminate 100 m ahead. For vehicles with engine capacity ≤125cc, this distance is reduced to:</div>
+        <div class="qa-toggle">+</div>
+      </div>
+      <div class="qa-body">
+        <div class="correct-answer">✓ Correct Answer: (c) 85 m</div>
+        <ul class="option-list">
+          <li>(a) 200 m</li>
+          <li>(b) 100 m</li>
+          <li class="correct">(c) 85 m</li>
+          <li>(d) No correct answer</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="qa-card">
+      <div class="qa-header" onclick="toggle(this)">
+        <div class="qa-num">48</div>
+        <div class="qa-question">Vehicles with a width exceeding what measurement must be provided with loading/gauge lights?</div>
+        <div class="qa-toggle">+</div>
+      </div>
+      <div class="qa-body">
+        <div class="correct-answer">✓ Correct Answer: (c) 2.10 m</div>
+        <ul class="option-list">
+          <li>(a) 3 m</li>
+          <li>(b) 2.50 m</li>
+          <li class="correct">(c) 2.10 m</li>
+          <li>(d) 2 m</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="qa-card">
+      <div class="qa-header" onclick="toggle(this)">
         <div class="qa-num">81</div>
-        <div class="qa-question">Direction indicator light colors:</div>
+        <div class="qa-question">Direction indicator light colours:</div>
         <div class="qa-toggle">+</div>
       </div>
       <div class="qa-body">
@@ -948,66 +1345,255 @@
         </ul>
       </div>
     </div>
+  </div>
+</section>
 
+<!-- ─── ROAD SIGNS ─── -->
+<section id="signs">
+  <div class="section-title">🚧 Road Signs &amp; Markings</div>
+  <div class="section-sub">Shape and colour tell you the sign category before you can read it.</div>
+
+  <div class="tip-box">
+    <strong>Sign Shape Key:</strong> Triangle (point up) = Danger/Warning | Circle (red border) = Prohibition | Circle (blue fill) = Mandatory/Obligation | Rectangle/Square = Information/Direction | Octagon (red) = STOP | Inverted triangle = YIELD/Give Way<br><br>
+    <strong>Prohibition and obligation signs share the same shape</strong> (circular) — both are circles.
+  </div>
+
+  <div class="qa-grid">
     <div class="qa-card">
       <div class="qa-header" onclick="toggle(this)">
-        <div class="qa-num">63</div>
-        <div class="qa-question">The light permitting a driver to signal they noticed someone about to overtake them is what color?</div>
+        <div class="qa-num">35</div>
+        <div class="qa-question">Which road signs have similar shapes?</div>
         <div class="qa-toggle">+</div>
       </div>
       <div class="qa-body">
-        <div class="correct-answer">✓ Correct Answer: (b) Green</div>
+        <div class="correct-answer">✓ Correct Answer: (c) Prohibition and obligation signals</div>
         <ul class="option-list">
-          <li>(a) Yellow</li>
-          <li class="correct">(b) Green</li>
-          <li>(c) White</li>
+          <li>(a) Indication and obligation signals</li>
+          <li>(b) Danger and obligation signals</li>
+          <li class="correct">(c) Prohibition and obligation signals</li>
+          <li>(d) No correct answer</li>
+        </ul>
+        <div class="qa-explanation">Both prohibition signs (red circle) and obligation signs (blue circle) are circular.</div>
+      </div>
+    </div>
+
+    <div class="qa-card">
+      <div class="qa-header" onclick="toggle(this)">
+        <div class="qa-num">83</div>
+        <div class="qa-question">The "no overtaking" sign has symbols of these colours:</div>
+        <div class="qa-toggle">+</div>
+      </div>
+      <div class="qa-body">
+        <div class="correct-answer">✓ Correct Answer: (b) Red and black</div>
+        <ul class="option-list">
+          <li>(a) White and black</li>
+          <li class="correct">(b) Red and black</li>
+          <li>(c) Blue</li>
+          <li>(d) A and B correct</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="qa-card">
+      <div class="qa-header" onclick="toggle(this)">
+        <div class="qa-num">34</div>
+        <div class="qa-question">When traffic is diverted, the diversion is signalled by a sign with what colour surface?</div>
+        <div class="qa-toggle">+</div>
+      </div>
+      <div class="qa-body">
+        <div class="correct-answer">✓ Correct Answer: (a) Blue</div>
+        <ul class="option-list">
+          <li class="correct">(a) Blue</li>
+          <li>(b) White</li>
+          <li>(c) Red</li>
+          <li>(d) No correct answer</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="qa-card">
+      <div class="qa-header" onclick="toggle(this)">
+        <div class="qa-num">84</div>
+        <div class="qa-question">The sign prohibiting traffic from both directions has a surface colour of:</div>
+        <div class="qa-toggle">+</div>
+      </div>
+      <div class="qa-body">
+        <div class="correct-answer">✓ Correct Answer: (b) White</div>
+        <ul class="option-list">
+          <li>(a) Black</li>
+          <li class="correct">(b) White</li>
+          <li>(c) Blue</li>
           <li>(d) Red</li>
         </ul>
-        <div class="explanation">A green light at the rear-left of a vehicle signals to the overtaking driver: "I have noticed your intention to pass."</div>
       </div>
     </div>
 
     <div class="qa-card">
       <div class="qa-header" onclick="toggle(this)">
-        <div class="qa-num">48</div>
-        <div class="qa-question">Vehicles with a width exceeding what measurement must be provided with loading/gauge lights?</div>
+        <div class="qa-num">104</div>
+        <div class="qa-question">The compulsory direction sign during roadworks has what colours?</div>
         <div class="qa-toggle">+</div>
       </div>
       <div class="qa-body">
-        <div class="correct-answer">✓ Correct Answer: (c) 2.10m</div>
+        <div class="correct-answer">✓ Correct Answer: (a) Blue surface, white symbol</div>
         <ul class="option-list">
-          <li>(a) 3m</li>
-          <li>(b) 2.50m</li>
-          <li class="correct">(c) 2.10m</li>
-          <li>(d) 2m</li>
+          <li class="correct">(a) Surface in blue, symbol in white</li>
+          <li>(b) Red perimeter, white surface, black symbol</li>
+          <li>(c) Red perimeter, white surface, red/black symbol</li>
+          <li>(d) No correct answer</li>
         </ul>
       </div>
     </div>
 
     <div class="qa-card">
       <div class="qa-header" onclick="toggle(this)">
-        <div class="qa-num">68</div>
-        <div class="qa-question">Road lights must illuminate 100m ahead. For vehicles with engine capacity ≤125cc, this distance is reduced to:</div>
+        <div class="qa-num">107</div>
+        <div class="qa-question">Temporary danger/diversion signs (for accidents or roadworks) are characterised by:</div>
         <div class="qa-toggle">+</div>
       </div>
       <div class="qa-body">
-        <div class="correct-answer">✓ Correct Answer: (c) 85m</div>
+        <div class="correct-answer">✓ Correct Answer: (b) White and yellow</div>
         <ul class="option-list">
-          <li>(a) 200m</li>
-          <li>(b) 100m</li>
-          <li class="correct">(c) 85m</li>
+          <li>(a) White and black</li>
+          <li class="correct">(b) White and yellow</li>
+          <li>(c) White surface only</li>
           <li>(d) No correct answer</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="qa-card">
+      <div class="qa-header" onclick="toggle(this)">
+        <div class="qa-num">78</div>
+        <div class="qa-question">Outside agglomeration, danger and priority signs must be placed at what distance from the hazard?</div>
+        <div class="qa-toggle">+</div>
+      </div>
+      <div class="qa-body">
+        <div class="correct-answer">✓ Correct Answer: (a) 150 to 200 m</div>
+        <ul class="option-list">
+          <li class="correct">(a) 150 to 200 m</li>
+          <li>(b) 100 to 150 m</li>
+          <li>(c) 50 to 100 m</li>
+          <li>(d) No correct answer</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="qa-card">
+      <div class="qa-header" onclick="toggle(this)">
+        <div class="qa-num">430–431</div>
+        <div class="qa-question">What is the difference between a continuous white line and a broken white line on the road?</div>
+        <div class="qa-toggle">+</div>
+      </div>
+      <div class="qa-body">
+        <div class="correct-answer">✓ Continuous = MUST NOT cross | Broken = may cross when safe</div>
+        <ul class="option-list">
+          <li class="correct">Continuous white line — a driver must not cross it under any circumstances (Q430)</li>
+          <li class="correct">Broken white line — a driver must not cross unless it is safe to do so (Q431)</li>
+        </ul>
+        <div class="qa-explanation">When a continuous white line is on your side, you are prohibited from overtaking by crossing it.</div>
+      </div>
+    </div>
+
+    <div class="qa-card">
+      <div class="qa-header" onclick="toggle(this)">
+        <div class="qa-num">89</div>
+        <div class="qa-question">The roadway section beyond a wide continuous white line (fictitious border) is reserved for:</div>
+        <div class="qa-toggle">+</div>
+      </div>
+      <div class="qa-body">
+        <div class="correct-answer">✓ Correct Answer: (c) Stopping and parking</div>
+        <ul class="option-list">
+          <li>(a) Stopping only</li>
+          <li>(b) Parking only</li>
+          <li class="correct">(c) Stopping and parking</li>
+          <li>(d) No correct answer</li>
+        </ul>
+        <div class="qa-explanation">Exception: does not apply to highways and autoroutes.</div>
+      </div>
+    </div>
+
+    <div class="qa-card">
+      <div class="qa-header" onclick="toggle(this)">
+        <div class="qa-num">3</div>
+        <div class="qa-question">A broken line announcing a continuous line, completed by white fall-back arrows, announces:</div>
+        <div class="qa-toggle">+</div>
+      </div>
+      <div class="qa-body">
+        <div class="correct-answer">✓ Correct Answer: (d) A and C are correct</div>
+        <ul class="option-list">
+          <li>(a) The traffic lane drivers must follow</li>
+          <li>(b) Approach of a continuous line</li>
+          <li>(c) Reduction of traffic lanes in the direction followed</li>
+          <li class="correct">(d) A and C are both correct</li>
         </ul>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ─── TRAFFIC RULES ─── -->
-<section id="rules">
-  <div class="section-sub">Parking, stopping, overtaking, and right-of-way.</div>
-  <div class="qa-grid">
+<!-- ─── PRIORITY & RIGHT OF WAY ─── -->
+<section id="priority">
+  <div class="section-title">🔀 Priority &amp; Right of Way</div>
+  <div class="section-sub">Who goes first — in every situation.</div>
 
+  <table class="ref-table">
+    <tr><th>Situation</th><th>Who Has Priority</th></tr>
+    <tr><td>Roundabout</td><td>Vehicle already <strong>inside</strong> the roundabout</td></tr>
+    <tr><td>Yield sign (inverted triangle)</td><td>Traffic on the major road</td></tr>
+    <tr><td>STOP sign (octagon)</td><td>All other traffic — full stop required first</td></tr>
+    <tr><td>Uncontrolled junction (no signs)</td><td>Vehicle coming from the <strong>right</strong></td></tr>
+    <tr><td>Traffic lights malfunctioning</td><td>Vehicle coming from the <strong>right</strong> (right-hand priority applies)</td></tr>
+    <tr><td>Zebra crossing</td><td>Pedestrian crossing</td></tr>
+    <tr><td>Emergency vehicle (siren + lights)</td><td>Emergency vehicle — pull right and stop</td></tr>
+    <tr><td>Merging from smaller road</td><td>Traffic on the main/larger road</td></tr>
+    <tr><td>Narrow mountain road</td><td>Vehicle going <strong>uphill</strong> (descending must reverse)</td></tr>
+  </table>
+
+  <div class="qa-grid">
+    <div class="qa-card">
+      <div class="qa-header" onclick="toggle(this)">
+        <div class="qa-num">29</div>
+        <div class="qa-question">When is the right-hand priority rule applied at junctions?</div>
+        <div class="qa-toggle">+</div>
+      </div>
+      <div class="qa-body">
+        <div class="correct-answer">✓ Correct Answer: (c) A and B are correct</div>
+        <ul class="option-list">
+          <li>(a) When there is no priority road signal</li>
+          <li>(b) When traffic lights intended for vehicles are not working</li>
+          <li class="correct">(c) A and B are correct</li>
+          <li>(d) No correct answer</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="qa-card">
+      <div class="qa-header" onclick="toggle(this)">
+        <div class="qa-num">124</div>
+        <div class="qa-question">A yellow flashing light at a dangerous spot — what does it change about priority rules?</div>
+        <div class="qa-toggle">+</div>
+      </div>
+      <div class="qa-body">
+        <div class="correct-answer">✓ Correct Answer: (a) It does not modify priority rules at all</div>
+        <ul class="option-list">
+          <li class="correct">(a) It absolutely does not modify the priority rules</li>
+          <li>(b) It gives priority to facing drivers</li>
+          <li>(c) It gives priority to long vehicle drivers</li>
+          <li>(d) No correct answer</li>
+        </ul>
+        <div class="qa-explanation">A yellow flashing light means "proceed with extreme caution" only — it does NOT change right-of-way rules.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── DRIVER CONDUCT ─── -->
+<section id="conduct">
+  <div class="section-title">📋 Driver Conduct</div>
+  <div class="section-sub">Parking, stopping, overtaking restrictions, and required documents.</div>
+
+  <div class="qa-grid">
     <div class="qa-card">
       <div class="qa-header" onclick="toggle(this)">
         <div class="qa-num">9</div>
@@ -1022,7 +1608,7 @@
           <li>(c) The right side only to overtake an animal</li>
           <li>(d) No correct answer</li>
         </ul>
-        <div class="explanation">In Rwanda (right-hand traffic), overtaking is always done by moving to the LEFT — into the oncoming lane — to pass the vehicle ahead.</div>
+        <div class="qa-explanation">Rwanda is right-hand traffic — overtaking always means moving to the left into the oncoming lane to pass.</div>
       </div>
     </div>
 
@@ -1052,27 +1638,10 @@
       <div class="qa-body">
         <div class="correct-answer">✓ Correct Answer: (d) All answers are correct</div>
         <ul class="option-list">
-          <li>(a) Less than 1m before/behind a stopped vehicle</li>
+          <li>(a) Less than 1 m before/behind a stopped vehicle</li>
           <li>(b) Where prohibition signs are placed</li>
           <li>(c) Where pedestrians must use the roadway to pass an obstacle</li>
           <li class="correct">(d) All answers are correct</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="qa-card">
-      <div class="qa-header" onclick="toggle(this)">
-        <div class="qa-num">43</div>
-        <div class="qa-question">Parking is also forbidden:</div>
-        <div class="qa-toggle">+</div>
-      </div>
-      <div class="qa-body">
-        <div class="correct-answer">✓ Correct Answer: (c) A and B are correct</div>
-        <ul class="option-list">
-          <li>(a) In front of entrances and exits of public passages</li>
-          <li>(b) On roadway where it is divided into traffic bands by continuous markings</li>
-          <li class="correct">(c) A and B are both correct</li>
-          <li>(d) No correct answer</li>
         </ul>
       </div>
     </div>
@@ -1088,7 +1657,7 @@
         <ul class="option-list">
           <li>(a) On all one-way roads</li>
           <li>(b) On the opposite side to where another vehicle is already stopped</li>
-          <li>(c) On two-way roads where remaining passage would be <12m</li>
+          <li>(c) On two-way roads where remaining passage would be &lt;12 m</li>
           <li class="correct">(d) All answers are correct</li>
         </ul>
       </div>
@@ -1108,42 +1677,6 @@
           <li>(c) 0.50 meter wide band</li>
           <li>(d) No correct answer</li>
         </ul>
-      </div>
-    </div>
-
-    <div class="qa-card">
-      <div class="qa-header" onclick="toggle(this)">
-        <div class="qa-num">29</div>
-        <div class="qa-question">When is the right-hand priority rule applied at junctions?</div>
-        <div class="qa-toggle">+</div>
-      </div>
-      <div class="qa-body">
-        <div class="correct-answer">✓ Correct Answer: (c) A and B are correct</div>
-        <ul class="option-list">
-          <li>(a) When there is no priority road signal</li>
-          <li>(b) When traffic lights intended for vehicles are not working</li>
-          <li class="correct">(c) A and B are correct</li>
-          <li>(d) No correct answer</li>
-        </ul>
-        <div class="explanation">The right-hand priority rule applies in two situations: no signals at all, OR when traffic lights are malfunctioning.</div>
-      </div>
-    </div>
-
-    <div class="qa-card">
-      <div class="qa-header" onclick="toggle(this)">
-        <div class="qa-num">124</div>
-        <div class="qa-question">A yellow flashing light at a dangerous spot — what does it change about priority rules?</div>
-        <div class="qa-toggle">+</div>
-      </div>
-      <div class="qa-body">
-        <div class="correct-answer">✓ Correct Answer: (a) It does not modify priority rules at all</div>
-        <ul class="option-list">
-          <li class="correct">(a) It absolutely does not modify the priority rules</li>
-          <li>(b) It gives priority to facing drivers</li>
-          <li>(c) It gives priority to long vehicle drivers</li>
-          <li>(d) No correct answer</li>
-        </ul>
-        <div class="explanation">A yellow flashing light only means "proceed with extreme caution" — it does NOT change right-of-way rules.</div>
       </div>
     </div>
 
@@ -1178,351 +1711,63 @@
           <li>(c) When it has a service brake</li>
           <li>(d) All answers correct</li>
         </ul>
-        <div class="explanation">No vehicle may coast downhill with engine off except when being towed by another vehicle.</div>
+        <div class="qa-explanation">Coasting downhill with engine off is prohibited except when being towed.</div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ─── ROAD SIGNS ─── -->
-<section id="signs">
-  <div class="section-sub">Sign shapes, colors, and road marking meanings.</div>
+<!-- ─── FINES & ENFORCEMENT ─── -->
+<section id="fines">
+  <div class="section-title">⚖️ Fines &amp; Enforcement</div>
+  <div class="section-sub">Rwanda enforces traffic laws strictly. Cameras, radar, and checkpoints are routine.</div>
 
-  <div class="tip-box">
-    <strong>Sign Color Key:</strong> Blue surface = indication/direction | Red perimeter = prohibition | Triangle = danger | Circle = obligation/prohibition | Square/Rectangle = information | White surface = general information
+  <div class="danger-box">
+    <strong>Repeat Offence Rule:</strong> If caught committing the <strong>same offence</strong> within the defined period, the fine is multiplied by <strong>9</strong>. A RWF 50,000 speeding fine becomes RWF 450,000 on a repeat offence.
   </div>
 
-  <div class="qa-grid">
+  <table class="ref-table">
+    <tr><th>Offence</th><th>Fine</th><th>Additional Penalty</th></tr>
+    <tr><td>Speeding</td><td><span class="answer-pill red">RWF 50,000</span></td><td>Repeat: × 9 = RWF 450,000</td></tr>
+    <tr><td>No seat belt</td><td><span class="answer-pill red">RWF 10,000</span></td><td>Per unbelted passenger</td></tr>
+    <tr><td>Traffic sign violation</td><td><span class="answer-pill red">RWF 10,000</span></td><td>—</td></tr>
+    <tr><td>Running a red light</td><td><span class="answer-pill red">Fine + possible suspension</span></td><td>Camera evidence admissible</td></tr>
+    <tr><td>Drunk driving (BAC &gt; 0.08%)</td><td><span class="answer-pill red">Heavy fine</span></td><td>Licence suspension or imprisonment</td></tr>
+    <tr><td>Mobile phone while driving</td><td><span class="answer-pill red">Fine</span></td><td>—</td></tr>
+  </table>
 
-    <div class="qa-card">
-      <div class="qa-header" onclick="toggle(this)">
-        <div class="qa-num">3</div>
-        <div class="qa-question">A broken line announcing a continuous line, completed by white fall-back arrows, announces:</div>
-        <div class="qa-toggle">+</div>
-      </div>
-      <div class="qa-body">
-        <div class="correct-answer">✓ Correct Answer: (d) A and C are correct</div>
-        <ul class="option-list">
-          <li>(a) The traffic lane drivers must follow</li>
-          <li>(b) Approach of a continuous line</li>
-          <li>(c) Reduction of traffic lanes in the direction followed</li>
-          <li class="correct">(d) A and C are both correct</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="qa-card">
-      <div class="qa-header" onclick="toggle(this)">
-        <div class="qa-num">34</div>
-        <div class="qa-question">When traffic is diverted, the diversion is signaled by a signal with what color surface?</div>
-        <div class="qa-toggle">+</div>
-      </div>
-      <div class="qa-body">
-        <div class="correct-answer">✓ Correct Answer: (a) Blue</div>
-        <ul class="option-list">
-          <li class="correct">(a) Blue</li>
-          <li>(b) White</li>
-          <li>(c) Red</li>
-          <li>(d) No correct answer</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="qa-card">
-      <div class="qa-header" onclick="toggle(this)">
-        <div class="qa-num">35</div>
-        <div class="qa-question">Which road signs have similar designs (shapes)?</div>
-        <div class="qa-toggle">+</div>
-      </div>
-      <div class="qa-body">
-        <div class="correct-answer">✓ Correct Answer: (c) Prohibition and obligation signals</div>
-        <ul class="option-list">
-          <li>(a) Indication and obligation signals</li>
-          <li>(b) Danger and obligation signals</li>
-          <li class="correct">(c) Prohibition and obligation signals</li>
-          <li>(d) No correct answer</li>
-        </ul>
-        <div class="explanation">Both prohibition signs (red circle with red border) and obligation signs (blue circle) are circular — hence they share a similar shape.</div>
-      </div>
-    </div>
-
-    <div class="qa-card">
-      <div class="qa-header" onclick="toggle(this)">
-        <div class="qa-num">83</div>
-        <div class="qa-question">The "no overtaking" sign has symbols of these colors:</div>
-        <div class="qa-toggle">+</div>
-      </div>
-      <div class="qa-body">
-        <div class="correct-answer">✓ Correct Answer: (b) Red and black</div>
-        <ul class="option-list">
-          <li>(a) White and black</li>
-          <li class="correct">(b) Red and black</li>
-          <li>(c) Blue</li>
-          <li>(d) A and B correct</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="qa-card">
-      <div class="qa-header" onclick="toggle(this)">
-        <div class="qa-num">84</div>
-        <div class="qa-question">The sign prohibiting traffic from both directions has a surface color of:</div>
-        <div class="qa-toggle">+</div>
-      </div>
-      <div class="qa-body">
-        <div class="correct-answer">✓ Correct Answer: (b) White</div>
-        <ul class="option-list">
-          <li>(a) Black</li>
-          <li class="correct">(b) White</li>
-          <li>(c) Blue</li>
-          <li>(d) Red</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="qa-card">
-      <div class="qa-header" onclick="toggle(this)">
-        <div class="qa-num">93</div>
-        <div class="qa-question">The sign showing a reserved public transport stop is characterized by what surface color?</div>
-        <div class="qa-toggle">+</div>
-      </div>
-      <div class="qa-body">
-        <div class="correct-answer">✓ Correct Answer: (a) Blue</div>
-        <ul class="option-list">
-          <li class="correct">(a) Blue</li>
-          <li>(b) White</li>
-          <li>(c) Red</li>
-          <li>(d) No correct answer</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="qa-card">
-      <div class="qa-header" onclick="toggle(this)">
-        <div class="qa-num">94</div>
-        <div class="qa-question">The dead-end road sign is characterized by symbols of what colors?</div>
-        <div class="qa-toggle">+</div>
-      </div>
-      <div class="qa-body">
-        <div class="correct-answer">✓ Correct Answer: (c) White and blue</div>
-        <ul class="option-list">
-          <li>(a) Black and red</li>
-          <li>(b) Black and white</li>
-          <li class="correct">(c) White and blue</li>
-          <li>(d) No correct answer</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="qa-card">
-      <div class="qa-header" onclick="toggle(this)">
-        <div class="qa-num">102</div>
-        <div class="qa-question">The sign showing the start of a highway (autoroute) has symbols of what colors?</div>
-        <div class="qa-toggle">+</div>
-      </div>
-      <div class="qa-body">
-        <div class="correct-answer">✓ Correct Answer: (a) White and black</div>
-        <ul class="option-list">
-          <li class="correct">(a) White and black</li>
-          <li>(b) White and red</li>
-          <li>(c) White and yellow</li>
-          <li>(d) No correct answer</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="qa-card">
-      <div class="qa-header" onclick="toggle(this)">
-        <div class="qa-num">104</div>
-        <div class="qa-question">The compulsory direction sign during roadworks has what colors?</div>
-        <div class="qa-toggle">+</div>
-      </div>
-      <div class="qa-body">
-        <div class="correct-answer">✓ Correct Answer: (a) Blue surface, white symbol</div>
-        <ul class="option-list">
-          <li class="correct">(a) Surface in blue, symbol in white</li>
-          <li>(b) Red perimeter, white surface, black symbol</li>
-          <li>(c) Red perimeter, white surface, red/black symbol</li>
-          <li>(d) No correct answer</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="qa-card">
-      <div class="qa-header" onclick="toggle(this)">
-        <div class="qa-num">105</div>
-        <div class="qa-question">The sign indicating special traffic regulations in a port or airport is:</div>
-        <div class="qa-toggle">+</div>
-      </div>
-      <div class="qa-body">
-        <div class="correct-answer">✓ Correct Answer: (b) Square, blue surface, white symbol</div>
-        <ul class="option-list">
-          <li>(a) Triangle, white surface, black symbol</li>
-          <li class="correct">(b) Square, blue surface, white symbol</li>
-          <li>(c) Circle, blue, white symbol</li>
-          <li>(d) No correct answer</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="qa-card">
-      <div class="qa-header" onclick="toggle(this)">
-        <div class="qa-num">107</div>
-        <div class="qa-question">Temporary danger/diversion signs (for accidents or roadworks) are characterized by:</div>
-        <div class="qa-toggle">+</div>
-      </div>
-      <div class="qa-body">
-        <div class="correct-answer">✓ Correct Answer: (b) White and yellow</div>
-        <ul class="option-list">
-          <li>(a) White and black</li>
-          <li class="correct">(b) White and yellow</li>
-          <li>(c) White surface only</li>
-          <li>(d) No correct answer</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="qa-card">
-      <div class="qa-header" onclick="toggle(this)">
-        <div class="qa-num">78</div>
-        <div class="qa-question">Outside agglomeration, danger and priority signs must be placed at what distance from the hazard?</div>
-        <div class="qa-toggle">+</div>
-      </div>
-      <div class="qa-body">
-        <div class="correct-answer">✓ Correct Answer: (a) 150 to 200m</div>
-        <ul class="option-list">
-          <li class="correct">(a) 150 to 200m</li>
-          <li>(b) 100 to 150m</li>
-          <li>(c) 50 to 100m</li>
-          <li>(d) No correct answer</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="qa-card">
-      <div class="qa-header" onclick="toggle(this)">
-        <div class="qa-num">90</div>
-        <div class="qa-question">Provisional orange-colored studs may replace:</div>
-        <div class="qa-toggle">+</div>
-      </div>
-      <div class="qa-body">
-        <div class="correct-answer">✓ Correct Answer: (b) Continuous and broken longitudinal white lines</div>
-        <ul class="option-list">
-          <li>(a) Continuous white lines only</li>
-          <li class="correct">(b) Continuous and broken longitudinal white lines</li>
-          <li>(c) All parallel continuous and broken lines</li>
-          <li>(d) No correct answer</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="qa-card">
-      <div class="qa-header" onclick="toggle(this)">
-        <div class="qa-num">89</div>
-        <div class="qa-question">The roadway section beyond a wide continuous white line (fictitious border) is reserved for:</div>
-        <div class="qa-toggle">+</div>
-      </div>
-      <div class="qa-body">
-        <div class="correct-answer">✓ Correct Answer: (c) Stopping and parking</div>
-        <ul class="option-list">
-          <li>(a) Stopping only</li>
-          <li>(b) Parking only</li>
-          <li class="correct">(c) Stopping and parking</li>
-          <li>(d) No correct answer</li>
-        </ul>
-        <div class="explanation">Exception: this does not apply to highways and roads for automobiles (autoroutes).</div>
-      </div>
-    </div>
-
-    <!-- Road marking questions 430-433 -->
-    <div class="qa-card">
-      <div class="qa-header" onclick="toggle(this)">
-        <div class="qa-num">430</div>
-        <div class="qa-question">What does a continuous (unbroken) white line on the road mean?</div>
-        <div class="qa-toggle">+</div>
-      </div>
-      <div class="qa-body">
-        <div class="correct-answer">✓ Correct Answer: (b) A driver must not cross the line</div>
-        <ul class="option-list">
-          <li>(a) You may overtake</li>
-          <li class="correct">(b) A driver must not cross the line</li>
-          <li>(c) You are approaching a stop sign</li>
-          <li>(d) Road narrows ahead</li>
-        </ul>
-        <div class="explanation">A solid continuous white line is a barrier line — you must not cross it under any circumstances.</div>
-      </div>
-    </div>
-
-    <div class="qa-card">
-      <div class="qa-header" onclick="toggle(this)">
-        <div class="qa-num">431</div>
-        <div class="qa-question">What does a broken white line on the road mean?</div>
-        <div class="qa-toggle">+</div>
-      </div>
-      <div class="qa-body">
-        <div class="correct-answer">✓ Correct Answer: (a) Driver must not cross it unless safe to do so</div>
-        <ul class="option-list">
-          <li class="correct">(a) Driver must not cross broken white line unless it is safe to do so</li>
-          <li>(b) You may not overtake</li>
-          <li>(c) You may overtake provided you don't cross the line</li>
-          <li>(d) You may not reverse</li>
-        </ul>
-        <div class="explanation">A broken/dashed white line can be crossed when it is safe — unlike a solid line which cannot be crossed at all.</div>
-      </div>
-    </div>
-
-    <div class="qa-card">
-      <div class="qa-header" onclick="toggle(this)">
-        <div class="qa-num">432-433</div>
-        <div class="qa-question">Driving from A to B with a continuous white line on your side: can you overtake?</div>
-        <div class="qa-toggle">+</div>
-      </div>
-      <div class="qa-body">
-        <div class="correct-answer">✓ Correct Answer: (c) Driver may NOT overtake by crossing the continuous white line</div>
-        <ul class="option-list">
-          <li>(a) Driver may cross the continuous line to overtake</li>
-          <li>(b) Driver may not cross white lines to overtake (Q433 answer)</li>
-          <li class="correct">(c) Driver may not overtake by crossing the continuous white line (Q432 answer)</li>
-          <li>(d) Driver may overtake if safe</li>
-        </ul>
-        <div class="explanation">When a continuous white line is on your side of the road, you are prohibited from crossing it — overtaking is forbidden from your direction.</div>
-      </div>
-    </div>
+  <div class="info-box">
+    <strong>Permit Exam Pass Mark:</strong> 12/20 (60%) at most exam centres. At Busanza Automated Test Centre: 60% or above. The test is available in Kinyarwanda, English, or French, and can be taken computer-based or paper-based.
   </div>
 </section>
 
 <!-- ─── SPECIAL SITUATIONS ─── -->
 <section id="special">
-  <div class="section-title">Special Situations</div>
+  <div class="section-title">⚠️ Special Situations</div>
   <div class="section-sub">Low visibility, convoys, pedestrian groups, animal herds, sound alarms.</div>
-  <div class="qa-grid">
 
+  <div class="qa-grid">
     <div class="qa-card">
       <div class="qa-header" onclick="toggle(this)">
-        <div class="qa-num">44 / 72</div>
-        <div class="qa-question">When visibility is less than 200m, groups of pedestrians/school children on the roadway must be signaled by:</div>
+        <div class="qa-num">44/72</div>
+        <div class="qa-question">When visibility is less than 200 m, groups of pedestrians/school children on the roadway must be signalled by:</div>
         <div class="qa-toggle">+</div>
       </div>
       <div class="qa-body">
         <div class="correct-answer">✓ Correct Answer: (c) A and B correct</div>
         <ul class="option-list">
-          <li>(a) Front: yellow light held on the LEFT (Q44) / white light on left (Q72)</li>
+          <li>(a) Front: yellow light held on the left (Q44) / white light on left (Q72)</li>
           <li>(b) Rear: white light held on left (Q44) / yellow light on left (Q72)</li>
           <li class="correct">(c) A and B are correct</li>
-          <li>(d) No correct answer</li>
         </ul>
-        <div class="explanation">
-          <strong>Q44 (general pedestrian groups):</strong> Front = yellow light on left | Rear = white light on left.<br>
-          <strong>Q72 (armed forces formations):</strong> Front = white light on left | Rear = yellow light on left.<br>
-          Key difference: general groups have yellow front; armed forces have white front.
-        </div>
+        <div class="qa-explanation"><strong>Q44 (general groups):</strong> Front = yellow on left, Rear = white on left. <strong>Q72 (armed forces):</strong> Front = white on left, Rear = yellow on left. Key difference: general groups = yellow front; armed forces = white front.</div>
       </div>
     </div>
 
     <div class="qa-card">
       <div class="qa-header" onclick="toggle(this)">
         <div class="qa-num">91</div>
-        <div class="qa-question">When visibility is less than 200m, animal-drawn vehicles, handcarts, and cattle must be signaled by:</div>
+        <div class="qa-question">When visibility is less than 200 m, animal-drawn vehicles, handcarts, and cattle must be signalled by:</div>
         <div class="qa-toggle">+</div>
       </div>
       <div class="qa-body">
@@ -1539,7 +1784,7 @@
     <div class="qa-card">
       <div class="qa-header" onclick="toggle(this)">
         <div class="qa-num">97</div>
-        <div class="qa-question">A herd of more than 4 large animals or 6 small animals must be signaled at night by:</div>
+        <div class="qa-question">A herd of more than 4 large animals or 6 small animals must be signalled at night by:</div>
         <div class="qa-toggle">+</div>
       </div>
       <div class="qa-body">
@@ -1560,14 +1805,14 @@
         <div class="qa-toggle">+</div>
       </div>
       <div class="qa-body">
-        <div class="correct-answer">✓ Correct Answer: (c) 100m</div>
+        <div class="correct-answer">✓ Correct Answer: (c) 100 m</div>
         <ul class="option-list">
-          <li>(a) 200m</li>
-          <li>(b) 150m</li>
-          <li class="correct">(c) 100m</li>
-          <li>(d) 50m</li>
+          <li>(a) 200 m</li>
+          <li>(b) 150 m</li>
+          <li class="correct">(c) 100 m</li>
+          <li>(d) 50 m</li>
         </ul>
-        <div class="explanation">Standard motor vehicles: alarm audible at 100m. Mopeds: 20m (Q85). Slow vehicles (≤50km/h flat): 50m (Q23).</div>
+        <div class="qa-explanation">Standard vehicles: 100 m | Slow vehicles (≤50 km/h flat): 50 m | Mopeds: 20 m.</div>
       </div>
     </div>
 
@@ -1582,7 +1827,7 @@
         <ul class="option-list">
           <li>(a) Priority vehicles</li>
           <li>(b) Vehicles assigned to road maintenance</li>
-          <li>(c) Vehicles wider than 2.10m</li>
+          <li>(c) Vehicles wider than 2.10 m</li>
           <li class="correct">(d) A and B are both correct</li>
         </ul>
       </div>
@@ -1590,34 +1835,33 @@
 
     <div class="qa-card">
       <div class="qa-header" onclick="toggle(this)">
-        <div class="qa-num">98 / 115</div>
-        <div class="qa-question">A convoy cannot occupy more than 500m. When it does, how is it divided?</div>
+        <div class="qa-num">98/115</div>
+        <div class="qa-question">A convoy cannot occupy more than 500 m. When it does, how is it divided?</div>
         <div class="qa-toggle">+</div>
       </div>
       <div class="qa-body">
-        <div class="correct-answer">✓ Correct Answer: (a) Groups of max 50m each, separated by at least 50m</div>
+        <div class="correct-answer">✓ Correct Answer: Groups of max 50 m, separated by at least 50 m</div>
         <ul class="option-list">
-          <li class="correct">(a) Maximum 50m per group (Q115 answer)</li>
-          <li>(b) Maximum 100m per group</li>
-          <li>(c) Maximum 150m per group</li>
-          <li>(d) No correct answer</li>
+          <li class="correct">(a) Maximum 50 m per sub-group, minimum 50 m interval between sub-groups</li>
+          <li>(b) Maximum 100 m per sub-group</li>
+          <li>(c) Maximum 150 m per sub-group</li>
         </ul>
-        <div class="explanation">Exceptions to convoy rules (Q98): national police convoys and military convoys in built-up areas are exempt.</div>
+        <div class="qa-explanation">Exceptions (Q98): national police and military convoys in built-up areas are exempt.</div>
       </div>
     </div>
 
     <div class="qa-card">
       <div class="qa-header" onclick="toggle(this)">
         <div class="qa-num">37</div>
-        <div class="qa-question">Emergency chain/cable fastening (max 20km/h) must be signaled by:</div>
+        <div class="qa-question">Emergency chain/cable fastening (max 20 km/h) must be signalled by:</div>
         <div class="qa-toggle">+</div>
       </div>
       <div class="qa-body">
-        <div class="correct-answer">✓ Correct Answer: (c) White square panel of at least 0.20m side</div>
+        <div class="correct-answer">✓ Correct Answer: (c) White square panel of at least 0.20 m side</div>
         <ul class="option-list">
-          <li>(a) Red piece of cloth, min 0.05m side</li>
-          <li>(b) Orange colored light</li>
-          <li class="correct">(c) White square panel of at least 0.20m by side</li>
+          <li>(a) Red piece of cloth, min 0.05 m side</li>
+          <li>(b) Orange coloured light</li>
+          <li class="correct">(c) White square panel of at least 0.20 m by side</li>
           <li>(d) No correct answer</li>
         </ul>
       </div>
@@ -1626,7 +1870,7 @@
     <div class="qa-card">
       <div class="qa-header" onclick="toggle(this)">
         <div class="qa-num">113</div>
-        <div class="qa-question">Any vehicle immobilized on the roadway must be signaled at distance. This does NOT apply to:</div>
+        <div class="qa-question">Any vehicle immobilized on the roadway must be signalled at distance. This does NOT apply to:</div>
         <div class="qa-toggle">+</div>
       </div>
       <div class="qa-body">
@@ -1644,12 +1888,78 @@
 
 <!-- ─── FULL Q&A ─── -->
 <section id="fullqa">
-  <div class="section-title">📋 Full Question Bank — All Remaining Questions</div>
-  <div class="section-sub">Additional questions not covered above. Click any question to reveal the answer.</div>
-
-  <div class="info-box">The questions above cover the highest-probability exam topics. The questions below complete the full bank. All answers follow the same format.</div>
+  <div class="section-title">📋 Additional Questions — Full Bank</div>
+  <div class="section-sub">Remaining questions from the official question bank not covered in the sections above.</div>
+  <div class="info-box">These complete the full question bank. All topics above cover the highest-probability exam questions.</div>
 
   <div class="qa-grid">
+    <div class="qa-card">
+      <div class="qa-header" onclick="toggle(this)">
+        <div class="qa-num">1</div>
+        <div class="qa-question">Every vehicle or set of vehicles in motion must have:</div>
+        <div class="qa-toggle">+</div>
+      </div>
+      <div class="qa-body">
+        <div class="correct-answer">✓ Correct Answer: (c) A and B are correct</div>
+        <ul class="option-list">
+          <li>(a) A driver</li>
+          <li>(b) A conveyor</li>
+          <li class="correct">(c) A and B are correct</li>
+          <li>(d) No correct answer</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="qa-card">
+      <div class="qa-header" onclick="toggle(this)">
+        <div class="qa-num">2</div>
+        <div class="qa-question">The term "Foot path" designates a narrow public way accessible only to the traffic of:</div>
+        <div class="qa-toggle">+</div>
+      </div>
+      <div class="qa-body">
+        <div class="correct-answer">✓ Correct Answer: (a) Pedestrians</div>
+        <ul class="option-list">
+          <li class="correct">(a) Pedestrians</li>
+          <li>(b) Two-wheel vehicles</li>
+          <li>(c) A and B both correct</li>
+          <li>(d) All responses are correct</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="qa-card">
+      <div class="qa-header" onclick="toggle(this)">
+        <div class="qa-num">25</div>
+        <div class="qa-question">The section of highway delineated by two broken parallel white lines, too narrow for cars, constitutes a passage for:</div>
+        <div class="qa-toggle">+</div>
+      </div>
+      <div class="qa-body">
+        <div class="correct-answer">✓ Correct Answer: (a) Bicycles and mopeds</div>
+        <ul class="option-list">
+          <li class="correct">(a) Bicycles and mopeds</li>
+          <li>(b) Wheelbarrows</li>
+          <li>(c) Cycles</li>
+          <li>(d) No correct answer</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="qa-card">
+      <div class="qa-header" onclick="toggle(this)">
+        <div class="qa-num">7</div>
+        <div class="qa-question">Vehicle length is limited to 11 m for:</div>
+        <div class="qa-toggle">+</div>
+      </div>
+      <div class="qa-body">
+        <div class="correct-answer">✓ Correct Answer: (a) Vehicles with one axle</div>
+        <ul class="option-list">
+          <li class="correct">(a) Vehicles with one axle</li>
+          <li>(b) Vehicles with two axles in continuation</li>
+          <li>(c) Semi-trailer</li>
+          <li>(d) No correct answer</li>
+        </ul>
+      </div>
+    </div>
 
     <div class="qa-card">
       <div class="qa-header" onclick="toggle(this)">
@@ -1670,34 +1980,34 @@
 
     <div class="qa-card">
       <div class="qa-header" onclick="toggle(this)">
-        <div class="qa-num">45</div>
-        <div class="qa-question">Pavements and shoulders are reserved for pedestrians when:</div>
+        <div class="qa-num">43</div>
+        <div class="qa-question">Parking is also forbidden:</div>
         <div class="qa-toggle">+</div>
       </div>
       <div class="qa-body">
-        <div class="correct-answer">✓ Correct Answer: (c) When there is no special regulation signaled</div>
+        <div class="correct-answer">✓ Correct Answer: (c) A and B are correct</div>
         <ul class="option-list">
-          <li>(a) There are special rules shown by signals</li>
-          <li>(b) Pedestrians are in groups under supervision</li>
-          <li class="correct">(c) When there is no special regulation signaled</li>
-          <li>(d) All answers correct</li>
+          <li>(a) In front of entrances and exits of public passages</li>
+          <li>(b) On roadway divided into traffic bands by continuous markings</li>
+          <li class="correct">(c) A and B are both correct</li>
+          <li>(d) No correct answer</li>
         </ul>
       </div>
     </div>
 
     <div class="qa-card">
       <div class="qa-header" onclick="toggle(this)">
-        <div class="qa-num">47</div>
-        <div class="qa-question">The trailer max weight must not exceed ½ the towing vehicle's empty weight + driver for:</div>
+        <div class="qa-num">45</div>
+        <div class="qa-question">Pavements and shoulders are reserved for pedestrians when:</div>
         <div class="qa-toggle">+</div>
       </div>
       <div class="qa-body">
-        <div class="correct-answer">✓ Correct Answer: (b) Trailer NOT provided with a service brake</div>
+        <div class="correct-answer">✓ Correct Answer: (c) When there is no special regulation signalled</div>
         <ul class="option-list">
-          <li>(a) Trailer provided with service brake</li>
-          <li class="correct">(b) Trailer not provided with service brake</li>
-          <li>(c) Trailer with max weight ≤750kg</li>
-          <li>(d) No correct answer</li>
+          <li>(a) There are special rules shown by signals</li>
+          <li>(b) Pedestrians are in groups under supervision</li>
+          <li class="correct">(c) When there is no special regulation signalled</li>
+          <li>(d) All answers correct</li>
         </ul>
       </div>
     </div>
@@ -1709,29 +2019,12 @@
         <div class="qa-toggle">+</div>
       </div>
       <div class="qa-body">
-        <div class="correct-answer">✓ Correct Answer: (c) A and B correct — Rear: 3.50m, Front: 1.70m</div>
+        <div class="correct-answer">✓ Correct Answer: (c) A and B correct — Rear: 3.50 m, Front: 1.70 m</div>
         <ul class="option-list">
-          <li>(a) Rear: 3.50m</li>
-          <li>(b) Front: 1.70m</li>
+          <li>(a) Rear: 3.50 m</li>
+          <li>(b) Front: 1.70 m</li>
           <li class="correct">(c) A and B are both correct</li>
           <li>(d) No correct answer</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="qa-card">
-      <div class="qa-header" onclick="toggle(this)">
-        <div class="qa-num">73</div>
-        <div class="qa-question">Loading on bicycles, mopeds, motorcycles — maximum rear overhang:</div>
-        <div class="qa-toggle">+</div>
-      </div>
-      <div class="qa-body">
-        <div class="correct-answer">✓ Correct Answer: (c) 50cm</div>
-        <ul class="option-list">
-          <li>(a) 20cm</li>
-          <li>(b) 30cm</li>
-          <li class="correct">(c) 50cm</li>
-          <li>(d) 60cm</li>
         </ul>
       </div>
     </div>
@@ -1743,11 +2036,11 @@
         <div class="qa-toggle">+</div>
       </div>
       <div class="qa-body">
-        <div class="correct-answer">✓ Correct Answer: (b) 150m</div>
+        <div class="correct-answer">✓ Correct Answer: (b) 150 m</div>
         <ul class="option-list">
-          <li>(a) 100m</li>
-          <li class="correct">(b) 150m</li>
-          <li>(c) 200m</li>
+          <li>(a) 100 m</li>
+          <li class="correct">(b) 150 m</li>
+          <li>(c) 200 m</li>
           <li>(d) No correct answer</li>
         </ul>
       </div>
@@ -1755,50 +2048,16 @@
 
     <div class="qa-card">
       <div class="qa-header" onclick="toggle(this)">
-        <div class="qa-num">38</div>
-        <div class="qa-question">Outside urban areas, maximum weight for vehicles with 3+ axles (except semi-trailers):</div>
+        <div class="qa-num">93</div>
+        <div class="qa-question">The sign showing a reserved public transport stop is characterised by what surface colour?</div>
         <div class="qa-toggle">+</div>
       </div>
       <div class="qa-body">
-        <div class="correct-answer">✓ Correct Answer: (c) 16 tonnes</div>
+        <div class="correct-answer">✓ Correct Answer: (a) Blue</div>
         <ul class="option-list">
-          <li>(a) 10 tonnes</li>
-          <li>(b) 12 tonnes</li>
-          <li class="correct">(c) 16 tonnes</li>
-          <li>(d) 24 tonnes</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="qa-card">
-      <div class="qa-header" onclick="toggle(this)">
-        <div class="qa-num">62</div>
-        <div class="qa-question">Outside urban areas, maximum weight for articulated vehicles with 3 axles:</div>
-        <div class="qa-toggle">+</div>
-      </div>
-      <div class="qa-body">
-        <div class="correct-answer">✓ Correct Answer: (c) 12 tonnes</div>
-        <ul class="option-list">
-          <li>(a) 20 tonnes</li>
-          <li>(b) 16 tonnes</li>
-          <li class="correct">(c) 12 tonnes</li>
-          <li>(d) 10 tonnes</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="qa-card">
-      <div class="qa-header" onclick="toggle(this)">
-        <div class="qa-num">120</div>
-        <div class="qa-question">Maximum load weight for any lorry in urban areas / national roads:</div>
-        <div class="qa-toggle">+</div>
-      </div>
-      <div class="qa-body">
-        <div class="correct-answer">✓ Correct Answer: (b) 16 tonnes</div>
-        <ul class="option-list">
-          <li>(a) 10 tonnes</li>
-          <li class="correct">(b) 16 tonnes</li>
-          <li>(c) 24 tonnes</li>
+          <li class="correct">(a) Blue</li>
+          <li>(b) White</li>
+          <li>(c) Red</li>
           <li>(d) No correct answer</li>
         </ul>
       </div>
@@ -1807,7 +2066,7 @@
     <div class="qa-card">
       <div class="qa-header" onclick="toggle(this)">
         <div class="qa-num">99</div>
-        <div class="qa-question">When a second vehicle is trailed and the total length exceeds 18m (excluding the leading vehicle's shaft), what is required?</div>
+        <div class="qa-question">When a second vehicle is trailed and total length exceeds 18 m, what is required?</div>
         <div class="qa-toggle">+</div>
       </div>
       <div class="qa-body">
@@ -1823,33 +2082,16 @@
 
     <div class="qa-card">
       <div class="qa-header" onclick="toggle(this)">
-        <div class="qa-num">100</div>
-        <div class="qa-question">The obligation to have signaling devices does NOT apply to:</div>
-        <div class="qa-toggle">+</div>
-      </div>
-      <div class="qa-body">
-        <div class="correct-answer">✓ Correct Answer: (c) A and B correct</div>
-        <ul class="option-list">
-          <li>(a) Baby/children's cars</li>
-          <li>(b) Wheelchairs (invalid carriages)</li>
-          <li class="correct">(c) A and B are both correct</li>
-          <li>(d) No correct answer</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="qa-card">
-      <div class="qa-header" onclick="toggle(this)">
         <div class="qa-num">116</div>
         <div class="qa-question">Signals at a road/railway crossing must be lit or reflective, visible in clear weather at:</div>
         <div class="qa-toggle">+</div>
       </div>
       <div class="qa-body">
-        <div class="correct-answer">✓ Correct Answer: (c) 300m</div>
+        <div class="correct-answer">✓ Correct Answer: (c) 300 m</div>
         <ul class="option-list">
-          <li>(a) 200m</li>
-          <li>(b) 250m</li>
-          <li class="correct">(c) 300m</li>
+          <li>(a) 200 m</li>
+          <li>(b) 250 m</li>
+          <li class="correct">(c) 300 m</li>
           <li>(d) No correct answer</li>
         </ul>
       </div>
@@ -1874,50 +2116,34 @@
 
     <div class="qa-card">
       <div class="qa-header" onclick="toggle(this)">
-        <div class="qa-num">121</div>
-        <div class="qa-question">When the distance from a danger sign to the hazard is less than 150m, an additional signal shows this distance. This signal is:</div>
+        <div class="qa-num">23</div>
+        <div class="qa-question">When unloaded vehicle speed on flat cannot exceed 50 km/h, the horn must be audible at:</div>
         <div class="qa-toggle">+</div>
       </div>
       <div class="qa-body">
-        <div class="correct-answer">✓ Correct Answer: (b) Rectangle with white surface</div>
+        <div class="correct-answer">✓ Correct Answer: (c) 50 m</div>
         <ul class="option-list">
-          <li>(a) Square with white surface</li>
-          <li class="correct">(b) Rectangle with white surface</li>
-          <li>(c) Triangle with red perimeter</li>
-          <li>(d) No correct answer</li>
+          <li>(a) 100 m</li>
+          <li>(b) 200 m</li>
+          <li class="correct">(c) 50 m</li>
+          <li>(d) 150 m</li>
         </ul>
+        <div class="qa-explanation">Slow vehicles (≤50 km/h flat): 50 m | Standard vehicles: 100 m | Mopeds: 20 m.</div>
       </div>
     </div>
 
     <div class="qa-card">
       <div class="qa-header" onclick="toggle(this)">
-        <div class="qa-num">96 (b)</div>
-        <div class="qa-question">An armored vehicle needs special permission to circulate. This permission is given by:</div>
+        <div class="qa-num">85</div>
+        <div class="qa-question">Mopeds must have a horn audible at:</div>
         <div class="qa-toggle">+</div>
       </div>
       <div class="qa-body">
-        <div class="correct-answer">✓ Correct Answer: (b) The Minister of Transport or delegate</div>
+        <div class="correct-answer">✓ Correct Answer: (b) 20 m</div>
         <ul class="option-list">
-          <li>(a) National Police</li>
-          <li class="correct">(b) Minister having transport in his duties (or delegate)</li>
-          <li>(c) Minister of Defense</li>
-          <li>(d) Tax department</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="qa-card">
-      <div class="qa-header" onclick="toggle(this)">
-        <div class="qa-num">7</div>
-        <div class="qa-question">Vehicle length is limited to 11 meters for:</div>
-        <div class="qa-toggle">+</div>
-      </div>
-      <div class="qa-body">
-        <div class="correct-answer">✓ Correct Answer: (a) Vehicles with one axle</div>
-        <ul class="option-list">
-          <li class="correct">(a) Vehicles with one axle</li>
-          <li>(b) Vehicles with two axles in continuation</li>
-          <li>(c) Semi-trailer</li>
+          <li>(a) Motorcycles — 100 m</li>
+          <li class="correct">(b) Mopeds — 20 m</li>
+          <li>(c) All motor vehicles — 100 m</li>
           <li>(d) No correct answer</li>
         </ul>
       </div>
@@ -1930,46 +2156,11 @@
         <div class="qa-toggle">+</div>
       </div>
       <div class="qa-body">
-        <div class="correct-answer">✓ Correct Answer: (c) 7m</div>
+        <div class="correct-answer">✓ Correct Answer: (c) 7 m</div>
         <ul class="option-list">
-          <li>(a) 11m</li>
-          <li>(b) 10m</li>
-          <li class="correct">(c) 7m</li>
-          <li>(d) No correct answer</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="qa-card">
-      <div class="qa-header" onclick="toggle(this)">
-        <div class="qa-num">23</div>
-        <div class="qa-question">When unloaded vehicle speed on flat cannot exceed 50 km/h, the horn must be audible at:</div>
-        <div class="qa-toggle">+</div>
-      </div>
-      <div class="qa-body">
-        <div class="correct-answer">✓ Correct Answer: (c) 50m</div>
-        <ul class="option-list">
-          <li>(a) 100m</li>
-          <li>(b) 200m</li>
-          <li class="correct">(c) 50m</li>
-          <li>(d) 150m</li>
-        </ul>
-        <div class="explanation">Slow vehicles (≤50km/h flat): 50m | Standard motor vehicles: 100m | Mopeds: 20m</div>
-      </div>
-    </div>
-
-    <div class="qa-card">
-      <div class="qa-header" onclick="toggle(this)">
-        <div class="qa-num">85</div>
-        <div class="qa-question">Mopeds must have a horn audible at:</div>
-        <div class="qa-toggle">+</div>
-      </div>
-      <div class="qa-body">
-        <div class="correct-answer">✓ Correct Answer: (b) 20m</div>
-        <ul class="option-list">
-          <li>(a) Motorcycles</li>
-          <li class="correct">(b) Mopeds — 20m</li>
-          <li>(c) All motor vehicles</li>
+          <li>(a) 11 m</li>
+          <li>(b) 10 m</li>
+          <li class="correct">(c) 7 m</li>
           <li>(d) No correct answer</li>
         </ul>
       </div>
@@ -1978,23 +2169,328 @@
 </section>
 
 </div><!-- /container -->
+</div><!-- /study-content -->
+
+<!-- ════ QUIZ SECTION ════ -->
+<div id="quiz-section">
+<div class="container">
+  <div id="quiz-start-screen" class="quiz-start">
+    <div class="section-title" style="text-align:center;border:none;padding:0;margin-bottom:8px;">🎯 Practice Exams</div>
+    <p>Select an exam or topic drill below. All questions are drawn from the official permit question bank and national traffic regulations.</p>
+    <div class="exam-cards" id="exam-card-grid"></div>
+    <button class="btn btn-ghost" onclick="showStudy('quickref')">← Back to Study Guide</button>
+  </div>
+
+  <div id="quiz-active-screen" style="display:none;" class="quiz-active">
+    <div class="q-header">
+      <div class="q-progress">Question <span id="q-cur">1</span> of <span id="q-tot">20</span> &nbsp;·&nbsp; Score: <span id="q-sc">0</span></div>
+      <div class="q-timer" id="q-timer">20:00</div>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="q-progress-fill"></div></div>
+    <div id="q-content"></div>
+    <div class="q-actions">
+      <button class="btn btn-ghost" onclick="quitQuiz()">Quit</button>
+      <button class="btn btn-primary" id="btn-next" onclick="nextQ()" style="display:none;">Next →</button>
+    </div>
+  </div>
+
+  <div id="quiz-results-screen" style="display:none;" class="quiz-active">
+    <div id="results-content"></div>
+  </div>
+</div>
+</div>
+
+<footer>
+  <strong>Rwanda Driving Permit Study Guide</strong> · Based on the National Official Gazette traffic regulations and official question bank · Good luck — aim for 20/20.
+</footer>
 
 <script>
-function toggle(header) {
-  const body = header.nextElementSibling;
-  const toggle = header.querySelector('.qa-toggle');
-  if (body.classList.contains('open')) {
-    body.classList.remove('open');
-    toggle.textContent = '+';
-  } else {
-    body.classList.add('open');
-    toggle.textContent = '−';
+// ─── NAVIGATION ──────────────────────────────────
+function showStudy(section) {
+  document.getElementById('study-content').style.display = 'block';
+  document.getElementById('quiz-section').style.display = 'none';
+  if (section) {
+    setTimeout(() => {
+      const el = document.getElementById(section);
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
+    }, 50);
   }
 }
 
-// Expand all on print
+function showQuiz() {
+  document.getElementById('study-content').style.display = 'none';
+  document.getElementById('quiz-section').style.display = 'block';
+  document.getElementById('quiz-start-screen').style.display = 'block';
+  document.getElementById('quiz-active-screen').style.display = 'none';
+  document.getElementById('quiz-results-screen').style.display = 'none';
+  window.scrollTo(0, 0);
+}
+
+// ─── ACCORDION TOGGLES ───────────────────────────
+function toggle(header) {
+  const body = header.nextElementSibling;
+  const t = header.querySelector('.qa-toggle');
+  body.classList.toggle('open');
+  t.textContent = body.classList.contains('open') ? '−' : '+';
+}
+
+function toggleRule(header) {
+  const body = header.nextElementSibling;
+  const t = header.querySelector('.rule-toggle-icon');
+  body.classList.toggle('open');
+  t.style.transform = body.classList.contains('open') ? 'rotate(180deg)' : '';
+}
+
+// ─── QUESTION BANK ───────────────────────────────
+const QUESTIONS = [
+  // GENERAL RULES
+  { cat:'General Rules', q:'Which side of the road do vehicles drive on in Rwanda?', opts:['Left side','Right side','Either side depending on the road','Centre lane'], ans:1, exp:'Rwanda drives on the RIGHT side of the road. The steering wheel is on the left side of the vehicle — unlike Kenya and Uganda.' },
+  { cat:'General Rules', q:'When overtaking another vehicle in Rwanda, you should pass on which side?', opts:['The right side of the vehicle ahead','The left side of the vehicle ahead','Either side depending on traffic','The centre of the road'], ans:1, exp:'Overtake on the LEFT — pass on the left side of the vehicle in front. Passing on the right (undertaking) is prohibited.' },
+  { cat:'General Rules', q:'At a roundabout, which vehicle has right of way?', opts:['The vehicle entering the roundabout','The largest vehicle','Vehicles already circulating inside the roundabout','The vehicle on the left'], ans:2, exp:'Vehicles already inside the roundabout have right of way. Entering vehicles must yield.' },
+  { cat:'General Rules', q:'Seat belts are mandatory for which passengers?', opts:['Driver only','Front seat passengers only','All passengers in all seats','Only passengers over 18'], ans:2, exp:'Seat belts are mandatory for ALL passengers in ALL seats — front and rear.' },
+  { cat:'General Rules', q:'Children under what age may not sit in the front seat?', opts:['Under 3','Under 6','Under 12','Under 16'], ans:2, exp:'Children under 12 may not sit in the front seat even when no other seats are available (Q27).' },
+  { cat:'General Rules', q:'What is the legal blood alcohol concentration (BAC) limit?', opts:['0.02%','0.05%','0.08%','0.10%'], ans:2, exp:'The legal BAC limit is 0.08%. Zero-tolerance is often applied to new and professional drivers.' },
+  { cat:'General Rules', q:'Mobile phone use while driving is permitted only when:', opts:['Stopped at traffic lights','Using a hands-free device','On a quiet rural road','Never — always prohibited'], ans:1, exp:'Hands-free devices are permitted. All other mobile phone use while driving is prohibited.' },
+  { cat:'General Rules', q:'What must a driver do when a pedestrian is at a zebra crossing?', opts:['Sound the horn and proceed','Flash headlights and continue','Stop completely and give way','Slow to 10 km/h but continue'], ans:2, exp:'Pedestrians have right of way at zebra crossings. Drivers must stop completely.' },
+  { cat:'General Rules', q:'At an uncontrolled junction with no signs and non-functioning traffic lights, who has priority?', opts:['The vehicle going straight','The vehicle from the right','The vehicle from the left','The faster vehicle'], ans:1, exp:'The right-hand priority rule applies when there are no signs OR when traffic lights are malfunctioning (Q29).' },
+  { cat:'General Rules', q:'What is Rwanda\'s national emergency police number?', opts:['911','999','112','100'], ans:2, exp:'The Rwanda National Police emergency number is 112.' },
+  { cat:'General Rules', q:'When overtaking is forbidden near a narrow bridge, what is the rule?', opts:['Allowed for motorcycles only','Allowed if road is clear','Forbidden for all vehicles except two-wheelers','Forbidden for all vehicles'], ans:2, exp:'Q40: Overtaking any vehicle other than a two-wheeler is forbidden near bridges with narrow roadways, near pedestrian crossings, and near dangerous road sections.' },
+  { cat:'General Rules', q:'It is forbidden to hold up normal traffic flow by:', opts:['Moving at abnormally reduced speed','Causing abrupt braking not required for safety','Both A and B','Neither A nor B'], ans:2, exp:'Q108: Both moving too slowly and causing unnecessary abrupt braking are prohibited.' },
+
+  // SPEED LIMITS
+  { cat:'Speed Limits', q:'What is the general speed limit in urban areas and cities?', opts:['30 km/h','40 km/h','60 km/h','80 km/h'], ans:1, exp:'The default urban speed limit is 40 km/h. Fine for speeding: RWF 50,000.' },
+  { cat:'Speed Limits', q:'What is the speed limit in residential zones?', opts:['20 km/h','30 km/h','40 km/h','50 km/h'], ans:1, exp:'Residential zones have a 30 km/h limit — the lowest zone speed limit in Rwanda.' },
+  { cat:'Speed Limits', q:'What is the maximum speed on national highways?', opts:['60 km/h','70 km/h','80 km/h','100 km/h'], ans:2, exp:'80 km/h is the absolute national highway maximum — and the highest speed limit in Rwanda.' },
+  { cat:'Speed Limits', q:'What is the maximum speed for rural inter-urban roads?', opts:['40 km/h','50 km/h','60 km/h','80 km/h'], ans:2, exp:'Rural roads outside built-up areas have a 60 km/h limit.' },
+  { cat:'Speed Limits', q:'What is the maximum speed a moped may travel at on any road?', opts:['40 km/h','45 km/h','50 km/h','60 km/h'], ans:2, exp:'Q11: Mopeds (cyclomoteurs) are limited to 50 km/h outside agglomeration — this is their ceiling on all roads.' },
+  { cat:'Speed Limits', q:'Without specific restrictions, what is the maximum speed for motorcycles?', opts:['30 km/h','40 km/h','50 km/h','60 km/h'], ans:1, exp:'Q14: Motorcycles are limited to 40 km/h in the absence of specific restrictions.' },
+  { cat:'Speed Limits', q:'What is the maximum speed for a public transport bus on a highway?', opts:['60 km/h','70 km/h','75 km/h','80 km/h'], ans:0, exp:'Q41: Public transport buses are limited to 60 km/h even on the 80 km/h national highway.' },
+  { cat:'Speed Limits', q:'What is the maximum speed for a taxi on a national highway?', opts:['60 km/h','70 km/h','75 km/h','80 km/h'], ans:2, exp:'Q42: Taxis ≤3,500 kg are limited to 75 km/h — 5 km/h below the highway maximum.' },
+  { cat:'Speed Limits', q:'When passing a pedestrian near an obstacle with insufficient clearance, the maximum speed is:', opts:['10 km/h','20 km/h','30 km/h','40 km/h'], ans:1, exp:'Q69: If a 1 m free space cannot be maintained when passing a pedestrian near an obstacle, the maximum speed is 20 km/h.' },
+  { cat:'Speed Limits', q:'What is the fine for speeding in Rwanda?', opts:['RWF 10,000','RWF 25,000','RWF 50,000','RWF 100,000'], ans:2, exp:'The speeding fine is RWF 50,000. A repeat offence within the same period is multiplied by 9.' },
+  { cat:'Speed Limits', q:'Vehicles must be fitted with a speedometer if likely to exceed:', opts:['25 km/h','30 km/h','40 km/h','60 km/h'], ans:2, exp:'Q54: Vehicles capable of exceeding 40 km/h on a flat surface must have a speed indicator visible to the driver.' },
+
+  // VEHICLE REQUIREMENTS
+  { cat:'Vehicle Requirements', q:'How often must public transport vehicles be inspected?', opts:['Every 3 months','Every 6 months','Every year','Every 2 years'], ans:1, exp:'Q33: Public transport vehicles require inspection every 6 months. Same for goods vehicles >3.5 t and driving school vehicles.' },
+  { cat:'Vehicle Requirements', q:'Which vehicles must be inspected every year?', opts:['Private cars','Driving school vehicles','Public transport vehicles','No correct answer — none'], ans:3, exp:'Q5 (TRAP): These categories are all inspected every 6 months, not annually. The answer is "no correct answer."' },
+  { cat:'Vehicle Requirements', q:'Which brake is used for normal everyday stopping while driving?', opts:['Parking brake','Emergency brake','Service brake','Drum brake'], ans:2, exp:'Q36: The service brake is the primary working brake for slowing and stopping in any condition.' },
+  { cat:'Vehicle Requirements', q:'Which brake holds a vehicle stationary on a 16% slope using purely mechanical action?', opts:['Service brake','Emergency brake','Parking brake','Hydraulic brake'], ans:2, exp:'Q65: The parking brake holds the vehicle mechanically on slopes up to 16% even without the driver.' },
+  { cat:'Vehicle Requirements', q:'The device used for slowing down the vehicle in case of brake failure is called:', opts:['Service brake','Parking brake','Emergency brake','Safety brake'], ans:2, exp:'Q15: The emergency brake is the backup system used when the service brake fails.' },
+  { cat:'Vehicle Requirements', q:'What is the maximum speed limit sign plate threshold — above what weight is it required?', opts:['3.5 tonnes','10 tonnes','16 tonnes','24 tonnes'], ans:3, exp:'Q10: Speed limit plate is only required on vehicles exceeding 24 tonnes authorized weight.' },
+  { cat:'Vehicle Requirements', q:'Registration change must be notified to the tax department within:', opts:['5 days','15 days','1 month','2 months'], ans:1, exp:'Q123: Any change to vehicle registration or owner details must be reported within 15 days.' },
+  { cat:'Vehicle Requirements', q:'What is the minimum number of windscreen wipers required by law?', opts:['1','2','3','Depends on vehicle type'], ans:0, exp:'Q16: The legal minimum is 1 windscreen wiper. Most vehicles have 2, but 1 satisfies the requirement.' },
+
+  // LIGHTS & REFLECTORS
+  { cat:'Lights & Reflectors', q:'What colour are the side reflectors on a vehicle?', opts:['White','Red','Yellow','Orange'], ans:2, exp:'Q66: Side reflectors are YELLOW. A frequently tested specific answer.' },
+  { cat:'Lights & Reflectors', q:'What colour are the reflectors marking the RIGHT border of the road?', opts:['White','Yellow','Red or orange','Blue'], ans:2, exp:'Q79: The right road border is marked with RED or ORANGE reflectors.' },
+  { cat:'Lights & Reflectors', q:'What colour are the reflectors marking the LEFT border of the road?', opts:['White','Yellow','Red','Blue'], ans:0, exp:'Q79: The left road border (oncoming side) is marked with WHITE reflectors.' },
+  { cat:'Lights & Reflectors', q:'The red brake light must be visible in clear weather at a minimum distance of:', opts:['100 m day / 50 m night','150 m day / 75 m night','200 m day / 100 m night','200 m day / 200 m night'], ans:2, exp:'Q22: Brake light must be visible at 200 m by day and 100 m at night.' },
+  { cat:'Lights & Reflectors', q:'Headlights must be switched off when following another vehicle closer than:', opts:['50 m','100 m','150 m','200 m'], ans:1, exp:'Q110: Switch to low beam when following within 100 m (unless intending to overtake).' },
+  { cat:'Lights & Reflectors', q:'For vehicles with engine ≤125cc, road lights must illuminate at minimum:', opts:['50 m','75 m','85 m','100 m'], ans:2, exp:'Q68: Standard vehicles require 100 m illumination; vehicles ≤125cc require 85 m.' },
+  { cat:'Lights & Reflectors', q:'Which vehicles must have a flashing blue light visible in all directions?', opts:['Wide vehicles (>2.10 m)','Police vehicles','Priority vehicles (ambulances, fire)','All emergency services'], ans:2, exp:'Q56: The flashing blue light is reserved specifically for priority vehicles.' },
+  { cat:'Lights & Reflectors', q:'Vehicles wider than what must have loading/gauge lights?', opts:['2.00 m','2.10 m','2.50 m','3.00 m'], ans:1, exp:'Q48: Vehicles with a width exceeding 2.10 m must be fitted with loading/gauge lights.' },
+  { cat:'Lights & Reflectors', q:'The minimum height of any light or reflector from the ground is:', opts:['20 cm','30 cm','40 cm','50 cm'], ans:2, exp:'Q49: The minimum mounting height for any light or reflector is 40 cm, except fog lights and reversing lights which are exempt.' },
+  { cat:'Lights & Reflectors', q:'Direction indicators — front lights are what colour?', opts:['Red or orange','Yellow or orange','White or yellow','Blue'], ans:2, exp:'Q81: Front direction indicators are white or yellow; rear direction indicators are red or orange.' },
+
+  // ROAD SIGNS
+  { cat:'Traffic Signs', q:'What shape are WARNING signs?', opts:['Circular','Rectangular','Triangular (point up)','Octagonal'], ans:2, exp:'Warning/danger signs are triangular (pointing upward) with a red border and white background.' },
+  { cat:'Traffic Signs', q:'What shape are PROHIBITORY signs (speed limits, no entry)?', opts:['Triangular','Circular with red border','Blue circle','Octagonal red'], ans:1, exp:'Prohibitory signs are circular with a red border. They share the circular shape with mandatory (blue circle) signs.' },
+  { cat:'Traffic Signs', q:'Which two sign categories share the same shape?', opts:['Warning and mandatory','Prohibition and warning','Prohibition and obligation (mandatory)','Information and obligation'], ans:2, exp:'Q35: Both prohibition signs (red circle) and obligation/mandatory signs (blue circle) are circular.' },
+  { cat:'Traffic Signs', q:'The "no overtaking" sign has symbols of what colours?', opts:['White and black','Red and black','Blue only','Red and white'], ans:1, exp:'Q83: The no-overtaking sign shows red and black symbols (two cars side by side).' },
+  { cat:'Traffic Signs', q:'A continuous (unbroken) white line on the road means:', opts:['Overtaking is encouraged','Overtaking permitted when clear','Driver must not cross the line','Lane merge ahead'], ans:2, exp:'Q430: A continuous white line is a barrier — drivers must not cross it under any circumstances.' },
+  { cat:'Traffic Signs', q:'A broken white line on the road means:', opts:['Never cross it','May cross when it is safe to do so','Overtaking is prohibited','Lane ends ahead'], ans:1, exp:'Q431: A broken/dashed white line may be crossed when it is safe to do so.' },
+  { cat:'Traffic Signs', q:'A diversion sign has what colour surface?', opts:['Red','White','Blue','Yellow'], ans:2, exp:'Q34: Diversion signs have a blue surface.' },
+  { cat:'Traffic Signs', q:'Temporary danger/diversion signs (accidents, roadworks) are characterised by:', opts:['White and black','White and yellow','Blue and white','Orange and black'], ans:1, exp:'Q107: Temporary signs are white and yellow.' },
+  { cat:'Traffic Signs', q:'Outside agglomeration, danger signs must be placed at what distance from the hazard?', opts:['50–100 m','100–150 m','150–200 m','200–250 m'], ans:2, exp:'Q78: Danger and priority signs outside agglomeration must be placed 150 to 200 m from the hazard.' },
+  { cat:'Traffic Signs', q:'What does a yellow flashing light at a dangerous spot change about priority rules?', opts:['Gives priority to facing traffic','Gives priority to heavy vehicles','Does not modify priority rules at all','Activates right-hand rule'], ans:2, exp:'Q124: A yellow flashing light means proceed with extreme caution only — it does NOT change right-of-way rules.' },
+
+  // FINES & CONDUCT
+  { cat:'Fines & Conduct', q:'What is the fine for failing to wear a seat belt?', opts:['RWF 5,000','RWF 10,000','RWF 25,000','RWF 50,000'], ans:1, exp:'The fine for a seat belt violation is RWF 10,000 per unbelted passenger.' },
+  { cat:'Fines & Conduct', q:'If caught committing the same offence again within the defined period, how is the fine adjusted?', opts:['Doubled (× 2)','Tripled (× 3)','Multiplied by 5','Multiplied by 9'], ans:3, exp:'Rwanda\'s repeat offence rule multiplies the fine by 9 for the same offence committed again in the same period.' },
+  { cat:'Fines & Conduct', q:'When stopped/parked on a pavement, the driver must leave at least how much space for pedestrians?', opts:['0.50 m','1.00 m','1.50 m','2.00 m'], ans:1, exp:'Q92: A minimum 1 meter wide band must be left for pedestrians.' },
+  { cat:'Fines & Conduct', q:'What is the minimum pass mark for the Rwanda permit theory test?', opts:['10/20 (50%)','12/20 (60%)','14/20 (70%)','16/20 (80%)'], ans:1, exp:'The minimum pass mark is 12/20 (60%) at most exam centres.' },
+  { cat:'Fines & Conduct', q:'Horn audibility — standard motor vehicle must be audible at:', opts:['20 m','50 m','100 m','200 m'], ans:2, exp:'Q77: Standard motor vehicles must have a horn audible at 100 m. Slow vehicles: 50 m. Mopeds: 20 m.' },
+  { cat:'Fines & Conduct', q:'Parking is forbidden less than how much space before or behind a stopped vehicle?', opts:['0.50 m','1 m','2 m','5 m'], ans:1, exp:'Q8: Parking is forbidden within 1 m before or behind another stopped vehicle.' },
+  { cat:'Fines & Conduct', q:'A vehicle may move downhill with engine off or in neutral only when:', opts:['On a slow descent','Being towed by another vehicle','Equipped with a service brake','Under all of these conditions'], ans:1, exp:'Q52: Coasting downhill with engine off is prohibited except when the vehicle is being towed.' },
+];
+
+// ─── EXAM DEFINITIONS ────────────────────────────
+const EXAMS = [
+  { id:'e1', label:'FULL EXAM 1', title:'General Rules & Driver Conduct', desc:'20 questions · 20 min · timed', type:'exam', cats:['General Rules','Fines & Conduct'], count:20 },
+  { id:'e2', label:'FULL EXAM 2', title:'Speed Limits & Vehicle Requirements', desc:'20 questions · 20 min · timed', type:'exam', cats:['Speed Limits','Vehicle Requirements'], count:20 },
+  { id:'e3', label:'FULL EXAM 3', title:'Lights & Signs', desc:'20 questions · 20 min · timed', type:'exam', cats:['Lights & Reflectors','Traffic Signs'], count:20 },
+  { id:'e4', label:'FULL EXAM 4', title:'Mixed — All Topics', desc:'20 questions · 20 min · timed', type:'exam', cats:null, count:20 },
+  { id:'d1', label:'DRILL', title:'Speed Limits Only', desc:'10 questions · untimed', type:'drill', cats:['Speed Limits'], count:10 },
+  { id:'d2', label:'DRILL', title:'Lights & Reflectors Only', desc:'10 questions · untimed', type:'drill', cats:['Lights & Reflectors'], count:10 },
+  { id:'d3', label:'DRILL', title:'Traffic Signs Only', desc:'10 questions · untimed', type:'drill', cats:['Traffic Signs'], count:10 },
+  { id:'d4', label:'DRILL', title:'Vehicle Requirements Only', desc:'10 questions · untimed', type:'drill', cats:['Vehicle Requirements'], count:10 },
+];
+
+// ─── QUIZ STATE ───────────────────────────────────
+let qs = { questions:[], cur:0, score:0, missed:[], timer:null, secs:0, timed:false };
+
+// ─── RENDER EXAM CARDS ────────────────────────────
+function renderExamCards() {
+  const grid = document.getElementById('exam-card-grid');
+  EXAMS.forEach(e => {
+    const card = document.createElement('div');
+    card.className = 'exam-card' + (e.type === 'drill' ? ' drill' : '');
+    card.innerHTML = `<div class="e-tag">${e.label}</div><div class="e-title">${e.title}</div><div class="e-desc">${e.desc}</div>`;
+    card.onclick = () => startExam(e);
+    grid.appendChild(card);
+  });
+}
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function startExam(exam) {
+  let pool = exam.cats ? QUESTIONS.filter(q => exam.cats.includes(q.cat)) : QUESTIONS;
+  const questions = shuffle(pool).slice(0, Math.min(exam.count, pool.length));
+
+  qs = { questions, cur:0, score:0, missed:[], timer:null, secs: exam.type === 'exam' ? exam.count * 60 : 0, timed: exam.type === 'exam' };
+
+  document.getElementById('quiz-start-screen').style.display = 'none';
+  document.getElementById('quiz-active-screen').style.display = 'block';
+  document.getElementById('quiz-results-screen').style.display = 'none';
+
+  document.getElementById('q-tot').textContent = questions.length;
+  document.getElementById('q-timer').textContent = qs.timed ? formatTime(qs.secs) : '∞';
+
+  if (qs.timed) qs.timer = setInterval(tickTimer, 1000);
+  renderQ();
+}
+
+function tickTimer() {
+  qs.secs--;
+  const el = document.getElementById('q-timer');
+  el.textContent = formatTime(qs.secs);
+  el.classList.toggle('warn', qs.secs < 60);
+  if (qs.secs <= 0) { clearInterval(qs.timer); showResults(); }
+}
+
+function formatTime(s) {
+  return `${Math.floor(s/60).toString().padStart(2,'0')}:${(s%60).toString().padStart(2,'0')}`;
+}
+
+function renderQ() {
+  const q = qs.questions[qs.cur];
+  document.getElementById('q-cur').textContent = qs.cur + 1;
+  document.getElementById('q-sc').textContent = qs.score;
+  document.getElementById('q-progress-fill').style.width = ((qs.cur / qs.questions.length) * 100) + '%';
+  document.getElementById('btn-next').style.display = 'none';
+
+  const letters = ['A','B','C','D'];
+  document.getElementById('q-content').innerHTML = `
+    <div class="q-card">
+      <div class="q-cat">${q.cat} · Question ${qs.cur + 1}</div>
+      <div class="q-text">${q.q}</div>
+      <div class="q-options">
+        ${q.opts.map((o,i) => `
+          <div class="q-option" id="opt-${i}" onclick="selectAnswer(${i})">
+            <span class="opt-ltr">${letters[i]}</span>
+            <span>${o}</span>
+          </div>
+        `).join('')}
+      </div>
+      <div class="q-explanation" id="q-exp">${q.exp}</div>
+    </div>`;
+}
+
+function selectAnswer(chosen) {
+  const q = qs.questions[qs.cur];
+  document.querySelectorAll('.q-option').forEach(o => o.classList.add('disabled'));
+  document.querySelectorAll('.q-option').forEach((o,i) => {
+    if (i === q.ans) o.classList.add('correct');
+    else if (i === chosen && chosen !== q.ans) o.classList.add('wrong');
+  });
+  document.getElementById('q-exp').classList.add('show');
+
+  if (chosen === q.ans) {
+    qs.score++;
+    document.getElementById('q-sc').textContent = qs.score;
+  } else {
+    qs.missed.push({ q: q.q, correct: q.opts[q.ans], yours: q.opts[chosen] });
+  }
+  document.getElementById('btn-next').style.display = 'inline-block';
+}
+
+function nextQ() {
+  qs.cur++;
+  if (qs.cur >= qs.questions.length) {
+    if (qs.timer) clearInterval(qs.timer);
+    showResults();
+  } else {
+    renderQ();
+  }
+}
+
+function quitQuiz() {
+  if (qs.timer) clearInterval(qs.timer);
+  document.getElementById('quiz-active-screen').style.display = 'none';
+  document.getElementById('quiz-start-screen').style.display = 'block';
+}
+
+function showResults() {
+  document.getElementById('quiz-active-screen').style.display = 'none';
+  document.getElementById('quiz-results-screen').style.display = 'block';
+
+  const total = qs.questions.length;
+  const pct = Math.round((qs.score / total) * 100);
+  const passed = qs.score >= Math.ceil(total * 0.6);
+  const ringColor = qs.score === total ? 'var(--correct-border)' : passed ? 'var(--blue)' : 'var(--red)';
+  const emoji = qs.score === total ? '🏆 Perfect Score!' : passed ? '✅ Passed' : '❌ Below Pass Mark';
+  const msg = qs.score === total
+    ? 'Outstanding — you have mastered this material.'
+    : passed
+    ? 'Good result. Review the missed questions below and retry.'
+    : 'Below 60% pass mark. Study the guide and try again.';
+
+  const missedHTML = qs.missed.length ? `
+    <div class="missed-list">
+      <div class="section-title" style="margin-bottom:16px;">Missed Questions</div>
+      ${qs.missed.map(m => `
+        <div class="missed-item">
+          <div class="missed-q">${m.q}</div>
+          <div class="missed-correct">✓ Correct: ${m.correct}</div>
+          <div class="missed-wrong">✗ Your answer: ${m.yours}</div>
+        </div>
+      `).join('')}
+    </div>` : '';
+
+  document.getElementById('results-content').innerHTML = `
+    <div class="results-card">
+      <div class="score-ring" style="border-color:${ringColor};">
+        <div class="score-num" style="color:${ringColor};">${qs.score}/${total}</div>
+        <div class="score-pct">${pct}%</div>
+      </div>
+      <div class="results-title">${emoji}</div>
+      <div class="results-sub">${msg}</div>
+      <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+        <button class="btn btn-ghost" onclick="backToExams()">← Back to Exams</button>
+        <button class="btn btn-primary" onclick="showStudy('quickref')">📖 Study Guide</button>
+      </div>
+      ${missedHTML}
+    </div>`;
+}
+
+function backToExams() {
+  document.getElementById('quiz-results-screen').style.display = 'none';
+  document.getElementById('quiz-start-screen').style.display = 'block';
+}
+
+// ─── INIT ─────────────────────────────────────────
+renderExamCards();
+
 window.addEventListener('beforeprint', () => {
   document.querySelectorAll('.qa-body').forEach(b => b.classList.add('open'));
+  document.querySelectorAll('.rule-block-body').forEach(b => b.classList.add('open'));
 });
 </script>
 </body>
