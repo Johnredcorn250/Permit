@@ -591,7 +591,8 @@
   <a onclick="showStudy('fines')">Fines</a>
   <a onclick="showStudy('special')">Special Situations</a>
   <a onclick="showStudy('fullqa')">Full Q&amp;A</a>
-  <a class="quiz-nav" onclick="showQuiz()">🎯 Practice Exams →</a>
+   <a class="quiz-nav" onclick="showQuiz()">🎯 Practice Exams →</a>
+  <a class="quiz-nav" href="practicetests.html">📝 80-Question Bank →</a>
 </div>
 
 <!-- ════ STUDY CONTENT ════ -->
@@ -2316,15 +2317,21 @@ const QUESTIONS = [
 
 // ─── EXAM DEFINITIONS ────────────────────────────
 const EXAMS = [
-  { id:'e1', label:'FULL EXAM 1', title:'General Rules & Driver Conduct', desc:'20 questions · 20 min · timed', type:'exam', cats:['General Rules','Fines & Conduct'], count:20 },
-  { id:'e2', label:'FULL EXAM 2', title:'Speed Limits & Vehicle Requirements', desc:'20 questions · 20 min · timed', type:'exam', cats:['Speed Limits','Vehicle Requirements'], count:20 },
-  { id:'e3', label:'FULL EXAM 3', title:'Lights & Signs', desc:'20 questions · 20 min · timed', type:'exam', cats:['Lights & Reflectors','Traffic Signs'], count:20 },
-  { id:'e4', label:'FULL EXAM 4', title:'Mixed — All Topics', desc:'20 questions · 20 min · timed', type:'exam', cats:null, count:20 },
-  { id:'d1', label:'DRILL', title:'Speed Limits Only', desc:'10 questions · untimed', type:'drill', cats:['Speed Limits'], count:10 },
-  { id:'d2', label:'DRILL', title:'Lights & Reflectors Only', desc:'10 questions · untimed', type:'drill', cats:['Lights & Reflectors'], count:10 },
-  { id:'d3', label:'DRILL', title:'Traffic Signs Only', desc:'10 questions · untimed', type:'drill', cats:['Traffic Signs'], count:10 },
-  { id:'d4', label:'DRILL', title:'Vehicle Requirements Only', desc:'10 questions · untimed', type:'drill', cats:['Vehicle Requirements'], count:10 },
+{ id:'e1', label:'FULL EXAM 1', title:'General Rules & Driver Conduct', desc:'', type:'exam', cats:['General Rules','Fines & Conduct'], count:20 },
+{ id:'e2', label:'FULL EXAM 2', title:'Speed Limits & Vehicle Requirements', desc:'', type:'exam', cats:['Speed Limits','Vehicle Requirements'], count:20 },
+{ id:'e3', label:'FULL EXAM 3', title:'Lights & Signs', desc:'', type:'exam', cats:['Lights & Reflectors','Traffic Signs'], count:20 },
+{ id:'e4', label:'FULL EXAM 4', title:'Mixed — All Topics', desc:'', type:'exam', cats:null, count:20 },
+{ id:'d1', label:'DRILL', title:'Speed Limits Only', desc:'', type:'drill', cats:['Speed Limits'], count:10 },
+{ id:'d2', label:'DRILL', title:'Lights & Reflectors Only', desc:'', type:'drill', cats:['Lights & Reflectors'], count:10 },
+{ id:'d3', label:'DRILL', title:'Traffic Signs Only', desc:'', type:'drill', cats:['Traffic Signs'], count:10 },
+{ id:'d4', label:'DRILL', title:'Vehicle Requirements Only', desc:'', type:'drill', cats:['Vehicle Requirements'], count:10 },
 ];
+  
+EXAMS.forEach(e => {
+  const pool = e.cats ? QUESTIONS.filter(q => e.cats.includes(q.cat)).length : QUESTIONS.length;
+  e.count = Math.min(e.count, pool);
+  e.desc = e.type === 'exam' ? `${e.count} questions · ${e.count} min · timed` : `${e.count} questions · untimed`;
+});
 
 // ─── QUIZ STATE ───────────────────────────────────
 let qs = { questions:[], cur:0, score:0, missed:[], timer:null, secs:0, timed:false };
