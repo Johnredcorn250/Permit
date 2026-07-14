@@ -503,17 +503,17 @@ function showResults() {
   clearInterval(timerInterval);
   const total = examQuestions.length;
   const pct = Math.round((score/total)*100);
-  const passed = pct >= 80;
+  const passed = pct >= 60;
 
-  document.getElementById('final-score').textContent = score;
-  document.getElementById('final-denom').textContent = `out of ${total}`;
-  document.getElementById('score-circle').className = passed ? 'score-circle' : 'score-circle fail';
-  document.getElementById('result-title').textContent =
-    score===total ? '🏆 Perfect Score!' : pct>=90 ? '🎯 Excellent!' : pct>=80 ? '✅ Passed!' : '📚 Keep Studying';
-  document.getElementById('result-sub').textContent =
-    score===total ? 'Flawless. You are ready for the real exam.' :
-    pct>=80 ? `You passed with ${pct}%. Review your ${total-score} miss${total-score===1?'':'es'} and move to the next exam.` :
-    `You scored ${score}/${total} (${pct}%). Review the questions you missed and retry.`;
+document.getElementById('final-score').textContent = score;
+document.getElementById('final-denom').textContent = `out of ${total}`;
+document.getElementById('score-circle').className = passed ? 'score-circle' : 'score-circle fail';
+document.getElementById('result-title').textContent =
+score===total ? '🏆 Perfect Score!' : pct>=90 ? '🎯 Excellent!' : pct>=60 ? '✅ Passed!' : '📚 Keep Studying';
+document.getElementById('result-sub').textContent =
+score===total ? 'Flawless. You are ready for the real exam.' :
+pct>=60 ? `You passed with ${pct}%. Review your ${total-score} miss${total-score===1?'':'es'} and move to the next exam.` :
+`You scored ${score}/${total} (${pct}%). Review the questions you missed and retry.`;
 
   document.getElementById('stat-correct').textContent = score;
   document.getElementById('stat-wrong').textContent = total-score;
